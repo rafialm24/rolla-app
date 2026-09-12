@@ -1,0 +1,14 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* === Profile Dropdown Animation === */
+.fade-drop-enter-active,
+.fade-drop-leave-active {
+  transition: opacity 0.18s ease, transform 0.18s ease;
+}
+.fade-drop-enter-from,
+.fade-drop-leave-to {
+  opacity: 0;
+  transform: translateY(-8px) scale(0.97);
+}

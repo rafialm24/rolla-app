@@ -206,8 +206,8 @@ const {
 const { activeProdId } = useProduksi()
 
 // State
-const today = new Date().toISOString().split('T')[0]
-const spkDate = ref(today)
+const today: string = new Date().toISOString().split('T')[0] || ''
+const spkDate = ref<string>(today)
 const selectedPremix = ref<any>(null)
 
 // Inputs Mapping
@@ -261,7 +261,7 @@ const loadCosting = async (id: number, qtyOrder: number) => {
 }
 
 const handleCreatePremix = async (item: any) => {
-  const currentQty = qtySet.value[item.id]
+  const currentQty = qtySet.value[item.id] || 0
   const res = await setPremixOrder({
     v_id_bom: item.id_bom,
     v_spk_id: item.id,
@@ -282,7 +282,7 @@ const handleCreatePremix = async (item: any) => {
 }
 
 const handleTransferAll = async (item: any) => {
-  const currentQty = qtySet.value[item.id]
+  const currentQty = qtySet.value[item.id] || 0
   const res = await transferAll(item.id, 1, currentQty)
   if (res.success) {
     alert('Set Inventory Staging Berhasil')

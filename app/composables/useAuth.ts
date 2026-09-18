@@ -15,13 +15,28 @@ export const useAuth = () => {
   const refreshToken = useCookie('refresh_token', cookieOptions)
   const user = useCookie('user_data', cookieOptions)
   const userProfile = useCookie<any>('user_profile', cookieOptions)
+  const userId = useCookie<number | null>('user_id', cookieOptions)
 
   /**
    * Fetch profil lengkap user dari API menggunakan access token.
    * Mengambil: nama_lengkap, nama_jabatan, cmp_desc, kelamin, tlp, foto
    */
+  
+  const fetchMe = async () => {
+    if (!accessToken.value) return
+    try {
+      const me: any = await $fetch(`${config.public.apiBase || ''}/auth/me`, {
+        headers: { Authorization: `Bearer ${accessToken.value}` }
+      })
+      userId.value = me?.user_id || me?.id || me?.data?.user_id || me?.data?.id || 0
+    } catch (err) {
+      console.error('Gagal mengambil /auth/me:', err)
+    }
+  }
+
   const fetchProfile = async () => {
     if (!accessToken.value) return
+    await fetchMe()
     try {
       const profile: any = await $fetch(`${config.public.apiBase || ''}/profile`, {
         headers: { Authorization: `Bearer ${accessToken.value}` }
@@ -100,6 +115,8 @@ export const useAuth = () => {
   }
 
   return {
+    userId,
+    fetchMe,
     accessToken,
     refreshToken,
     user,

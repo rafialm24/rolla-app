@@ -1,7 +1,7 @@
 // idClass: 1 = Finish Good, 3 = Premix/Intermediate
 export const useInventoryFG = (idClass: number = 1) => {
   const config = useRuntimeConfig()
-  const { accessToken, logout } = useAuth()
+  const { accessToken, logout, userId } = useAuth()
   const { activeProdId } = useProduksi()
 
   // --- State ---
@@ -21,10 +21,20 @@ export const useInventoryFG = (idClass: number = 1) => {
 
     isLoadingCombo.value = true
     try {
+      const endpoint = idClass === 1
+        ? `${config.public.apiBase || ''}/produksi/combo-item-area-produksi`
+        : `${config.public.apiBase || ''}/produksi/combo-item-material-area-produksi`
+
       const response: any = await $fetch(
-        `${config.public.apiBase || ''}/produksi/combo-prod-finis-good`,
+        endpoint,
         {
-          query: { v_lokasi_id: idLokasi },
+          query: { 
+            var_where: '',
+            var_page_number: 1,
+            var_row_page: 500,
+            v_id_prod: idLokasi,
+            v_id_class: idClass
+          },
           headers: { Authorization: `Bearer ${accessToken.value}` },
         }
       )
@@ -76,18 +86,19 @@ export const useInventoryFG = (idClass: number = 1) => {
   }
 
   // Tambah item ke inventory area produksi
-  const addItemInventory = async (payload: {
+  const addItemInventoryArea = async (payload: {
     v_id_item: number
     v_uom_bom: number
     v_class_item: number
     v_id_prod: number
   }) => {
+    const finalPayload = { ...payload, v_id_usr: userId.value || 0 }
     try {
       const response: any = await $fetch(
         `${config.public.apiBase || ''}/produksi/add-item-inventory-prod-area`,
         {
           method: 'POST',
-          body: payload,
+          body: finalPayload,
           headers: { Authorization: `Bearer ${accessToken.value}` },
         }
       )
@@ -122,7 +133,7 @@ export const useInventoryFG = (idClass: number = 1) => {
     searchKeyword,
     fetchComboFinishGood,
     fetchStockOnHand,
-    addItemInventory,
+    addItemInventoryArea,
     goToPage,
     setRowsPerPage,
   }

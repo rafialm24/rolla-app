@@ -1,6 +1,6 @@
 export const useInventoryLokasi = () => {
   const config = useRuntimeConfig()
-  const { accessToken, logout } = useAuth()
+  const { accessToken, logout, userId } = useAuth()
   const { activeProdId } = useProduksi()
 
   // --- State ---
@@ -61,9 +61,15 @@ export const useInventoryLokasi = () => {
     try {
       // NOTE: reusing finish-good combo endpoint as it seems to be the default for item picking
       const response: any = await $fetch(
-        `${config.public.apiBase || ''}/produksi/combo-prod-finis-good`,
+        `${config.public.apiBase || ''}/produksi/combo-item-material-area-produksi`,
         {
-          query: { v_lokasi_id: idLokasi },
+          query: {
+            var_where: '',
+            var_page_number: 1,
+            var_row_page: 500,
+            v_id_prod: idLokasi,
+            v_id_class: 0
+          },
           headers: { Authorization: `Bearer ${accessToken.value}` },
         }
       )
@@ -114,18 +120,19 @@ export const useInventoryLokasi = () => {
   }
 
   // Tambah item ke inventory area produksi
-  const addItemInventory = async (payload: {
+  const addItemInventoryLokasi = async (payload: {
     v_id_item: number
     v_uom_bom: number
     v_class_item: number
     v_id_prod: number
   }) => {
+    const finalPayload = { ...payload, v_id_usr: userId.value || 0 }
     try {
       const response: any = await $fetch(
-        `${config.public.apiBase || ''}/produksi/add-item-inventory-prod-area`,
+        `${config.public.apiBase || ''}/produksi/add-item-inventory-prod-lokasi`,
         {
           method: 'POST',
-          body: payload,
+          body: finalPayload,
           headers: { Authorization: `Bearer ${accessToken.value}` },
         }
       )
@@ -160,7 +167,7 @@ export const useInventoryLokasi = () => {
     searchKeyword,
     fetchComboLokasi,
     fetchStockOnHandLokasi,
-    addItemInventory,
+    addItemInventoryLokasi,
     goToPage,
     setRowsPerPage,
     comboProdLokasiList,

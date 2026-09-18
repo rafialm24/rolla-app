@@ -213,35 +213,12 @@
 
               <div>
                 <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1.5">UOM BOM (ID)</label>
-                <UInput
+                <USelect
                   v-model.number="addForm.v_uom_bom"
-                  type="number"
-                  min="0"
+                  :options="[{label:'-- Pilih UOM --', value:0}, ...uomComboList.map(i => ({label: i.name_uom || i.uom || i.satuan || i.nama_satuan || i.nama || i.name || i.uom_name || i.uom_bom || i.name_prod_cate || (Object.values(i).find(v => typeof v === 'string' && isNaN(Number(v)))) || i.id, value: i.id}))]"
                   size="md"
-                  placeholder="Masukkan UOM BOM ID"
+                  :disabled="isFetchingUom"
                   :ui="{ rounded: 'rounded-xl', base: 'font-semibold' }"
-                />
-              </div>
-
-              <div>
-                <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1.5">Class Item (ID)</label>
-                <UInput
-                  v-model.number="addForm.v_class_item"
-                  type="number"
-                  min="0"
-                  size="md"
-                  placeholder="Masukkan Class Item ID"
-                  :ui="{ rounded: 'rounded-xl', base: 'font-semibold' }"
-                />
-              </div>
-
-              <div>
-                <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1.5">Area Produksi</label>
-                <UInput
-                  :value="activeProdId"
-                  disabled
-                  size="md"
-                  :ui="{ rounded: 'rounded-xl', base: 'font-bold bg-slate-100 text-slate-400' }"
                 />
               </div>
             </div>
@@ -275,8 +252,7 @@ import { useInventoryFG } from '~/composables/useInventoryFG'
 
 definePageMeta({ layout: false })
 
-const { activeProdId } = useProduksi()
-
+const { activeProdId, fetchUomKonversiBom } = useProduksi()
 // idClass 1 = Finish Good
 const {
   itemComboList,
@@ -289,7 +265,7 @@ const {
   searchKeyword,
   fetchComboFinishGood,
   fetchStockOnHand,
-  addItemInventory,
+  addItemInventoryArea,
   goToPage,
   setRowsPerPage,
 } = useInventoryFG(1)
@@ -297,7 +273,22 @@ const {
 const rowsPerPageLocal = ref(rowsPerPage.value)
 const showAddModal = ref(false)
 const isSaving = ref(false)
-const addForm = ref({ v_id_item: 0, v_uom_bom: 0, v_class_item: 0 })
+const addForm = ref({ v_id_item: 0, v_uom_bom: 0, v_class_item: 1 })
+
+const uomComboList = ref<any[]>([])
+const isFetchingUom = ref(false)
+
+watch(() => addForm.value.v_id_item, async (newId) => {
+  if (newId && activeProdId.value) {
+    isFetchingUom.value = true
+    addForm.value.v_uom_bom = 0
+    uomComboList.value = await fetchUomKonversiBom(newId, activeProdId.value)
+    isFetchingUom.value = false
+  } else {
+    uomComboList.value = []
+  }
+})
+
 
 let searchTimer: ReturnType<typeof setTimeout> | null = null
 
@@ -323,7 +314,7 @@ const handleRefresh = async () => {
 }
 
 const openAddItemModal = () => {
-  addForm.value = { v_id_item: 0, v_uom_bom: 0, v_class_item: 0 }
+  addForm.value = { v_id_item: 0, v_uom_bom: 0, v_class_item: 1 }
   showAddModal.value = true
 }
 
@@ -335,7 +326,7 @@ const handleAddItem = async () => {
   if (!activeProdId.value || addForm.value.v_id_item === 0) return
   isSaving.value = true
   try {
-    const result = await addItemInventory({
+    const result = await addItemInventoryArea({
       v_id_item: addForm.value.v_id_item,
       v_uom_bom: addForm.value.v_uom_bom,
       v_class_item: addForm.value.v_class_item,

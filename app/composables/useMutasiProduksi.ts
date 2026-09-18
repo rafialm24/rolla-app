@@ -93,7 +93,7 @@ export const useMutasiProduksi = () => {
   }
 
   // Posting Mutasi (Finalize mutasi loading list)
-  const postLoadingMutasi = async (storeId: number, mutasiDate: string) => {
+  const postLoadingMutasi = async (mutasiDate: string) => {
     isSaving.value = true
     try {
       const res: any = await $fetch(`${config.public.apiBase || ''}/produksi/real-time-order-produksi/posting-loading-mutasi-prod`, {
@@ -101,8 +101,7 @@ export const useMutasiProduksi = () => {
         headers: { Authorization: `Bearer ${accessToken.value}` },
         body: {
           v_prod_id: activeProdId.value || 0,
-          v_mutasi_date: mutasiDate,
-          v_id_store: storeId
+          v_mutasi_date: mutasiDate
         }
       })
       return { success: true, data: res.data }

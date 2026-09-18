@@ -150,10 +150,6 @@
             </div>
             <div class="flex items-center gap-4">
               <div class="flex items-center gap-2">
-                <span class="text-[9px] font-bold text-slate-500 uppercase tracking-widest">Store Tujuan:</span>
-                <UInput v-model="storeId" type="number" placeholder="ID Store" size="md" :ui="{ rounded: 'rounded-xl', base: 'font-semibold w-24' }" />
-              </div>
-              <div class="flex items-center gap-2">
                 <span class="text-[9px] font-bold text-slate-500 uppercase tracking-widest">Tgl Mutasi:</span>
                 <UInput v-model="mutasiDate" type="date" size="md" :ui="{ rounded: 'rounded-xl', base: 'font-semibold' }" />
               </div>
@@ -252,7 +248,6 @@ const totalPagesExport = computed(() => Math.ceil(totalExport.value / rowsExport
 let exportTimeout: any = null
 
 const mutasiDate = ref('')
-const storeId = ref<number | null>(null)
 
 const initPage = async () => {
   await fetchLoadingExportDetails()
@@ -335,18 +330,13 @@ const handlePosting = async () => {
     alert("Tanggal Mutasi tidak boleh kosong!")
     return
   }
-  if (!storeId.value) {
-    alert("Store Tujuan tidak boleh kosong!")
-    return
-  }
   
-  const res = await postLoadingMutasi(storeId.value, mutasiDate.value)
+  const res = await postLoadingMutasi(mutasiDate.value)
   if (res.success) {
     alert("Berhasil di-posting!")
     await loadExportDetails()
     await fetchLoadingExportDetails()
     mutasiDate.value = ''
-    storeId.value = null
   } else {
     alert("Gagal posting.")
   }

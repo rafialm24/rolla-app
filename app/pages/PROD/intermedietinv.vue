@@ -227,25 +227,6 @@
                 />
               </div>
 
-              <div>
-                <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1.5">Class Item</label>
-                <UInput
-                  :value="3"
-                  disabled
-                  size="md"
-                  :ui="{ rounded: 'rounded-xl', base: 'font-bold bg-slate-100 text-slate-400' }"
-                />
-              </div>
-
-              <div>
-                <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1.5">Area Produksi</label>
-                <UInput
-                  :value="activeProdId"
-                  disabled
-                  size="md"
-                  :ui="{ rounded: 'rounded-xl', base: 'font-bold bg-slate-100 text-slate-400' }"
-                />
-              </div>
             </div>
 
             <div class="px-6 py-4 bg-white border-t border-slate-100 flex gap-2 justify-end">
@@ -277,8 +258,7 @@ import { useInventoryFG } from '~/composables/useInventoryFG'
 
 definePageMeta({ layout: false })
 
-const { activeProdId } = useProduksi()
-
+const { activeProdId, fetchUomKonversiBom } = useProduksi()
 // idClass 3 = Premix / Intermediate
 const {
   itemComboList,
@@ -291,7 +271,7 @@ const {
   searchKeyword,
   fetchComboFinishGood,
   fetchStockOnHand,
-  addItemInventory,
+  addItemInventoryArea,
   goToPage,
   setRowsPerPage,
 } = useInventoryFG(3)
@@ -300,6 +280,21 @@ const rowsPerPageLocal = ref(rowsPerPage.value)
 const showAddModal = ref(false)
 const isSaving = ref(false)
 const addForm = ref({ v_id_item: 0, v_uom_bom: 0 })
+
+const uomComboList = ref<any[]>([])
+const isFetchingUom = ref(false)
+
+watch(() => addForm.value.v_id_item, async (newId) => {
+  if (newId && activeProdId.value) {
+    isFetchingUom.value = true
+    addForm.value.v_uom_bom = 0
+    uomComboList.value = await fetchUomKonversiBom(newId, activeProdId.value)
+    isFetchingUom.value = false
+  } else {
+    uomComboList.value = []
+  }
+})
+
 const selectedComboId = ref<number | null>(null)
 
 let searchTimer: ReturnType<typeof setTimeout> | null = null
@@ -338,7 +333,7 @@ const handleAddItem = async () => {
   if (!activeProdId.value || addForm.value.v_id_item === 0) return
   isSaving.value = true
   try {
-    const result = await addItemInventory({
+    const result = await addItemInventoryArea({
       v_id_item: addForm.value.v_id_item,
       v_uom_bom: addForm.value.v_uom_bom,
       v_class_item: 3, // Premix class

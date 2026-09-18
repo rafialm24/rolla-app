@@ -76,6 +76,24 @@ export const useProduksi = () => {
     await fetchProduksiTitle(id)
   }
 
+  const fetchUomKonversiBom = async (v_id_produk: number, v_id_prod: number) => {
+    try {
+      const response: any = await $fetch(`${config.public.apiBase || ''}/produksi/get-uom-konversi-bom`, {
+        query: { v_id_produk, v_id_prod },
+        headers: {
+          'Authorization': `Bearer ${accessToken.value}`
+        }
+      })
+      if (response && response.data) {
+        return Array.isArray(response.data) ? response.data : []
+      }
+      return Array.isArray(response) ? response : []
+    } catch (err) {
+      console.error(`Failed to fetch UOM Konversi BOM for produk=${v_id_produk}, prod=${v_id_prod}:`, err)
+      return []
+    }
+  }
+
   return {
     produksiList,
     currentProduksi,
@@ -83,6 +101,7 @@ export const useProduksi = () => {
     isLoading,
     fetchProduksiIndex,
     fetchProduksiTitle,
-    setActiveProdId
+    setActiveProdId,
+    fetchUomKonversiBom
   }
 }

@@ -120,7 +120,7 @@ export const useBom = () => {
       q.append('mix_id', params.v_mix_id.toString())
       q.append('v_id_prod', params.v_id_prod.toString())
 
-      const res: any = await $fetch(`${config.public.apiBase || ''}/produksi/master-bom/combo-produk-group-prod-material-bom?${q.toString()}`, {
+      const res: any = await $fetch(`${config.public.apiBase || ''}/produksi/master-bom/combo-produk-group-prod-material-bom-rolla?${q.toString()}`, {
         headers: { 'Authorization': `Bearer ${accessToken.value}` }
       })
       comboMaterialList.value = res.rows || []
@@ -158,7 +158,7 @@ export const useBom = () => {
 
   const saveProductionOrder = async (payload: any) => {
     try {
-      const res: any = await $fetch(`${config.public.apiBase || ''}/produksi/master-bom/save-production-order-old`, {
+      const res: any = await $fetch(`${config.public.apiBase || ''}/produksi/master-bom/save-production-order-rolla`, {
         method: 'POST',
         headers: { 'Authorization': `Bearer ${accessToken.value}` },
         body: payload

@@ -573,8 +573,8 @@ const submitUpdatePrice = async () => {
   }
   const res = await updatePriceDetail({
     v_id: updatePriceForm.value.id,
-    v_amount: updatePriceForm.value.amount,
-    v_active: updatePriceForm.value.active ? '1' : '0', // Assuming the SP expects string 1/0 or true/false, check if it needs bool. Actually the req says string. Let's pass 'true'/'false' just in case, wait, the API struct says `v_active: String`
+    v_amount: String(updatePriceForm.value.amount),
+    v_active: updatePriceForm.value.active ? '1' : '0',
     txtpassword: updatePriceForm.value.password
   })
   if (res.success && res.data?.status === 1) {
@@ -582,7 +582,11 @@ const submitUpdatePrice = async () => {
     isUpdatePriceModalOpen.value = false
     loadDetailList()
   } else {
-    toast.add({ title: 'Error', description: 'Failed to update price or wrong password', color: 'red' })
+    toast.add({
+      title: 'Error',
+      description: typeof res.message === 'string' ? res.message : 'Failed to update price or wrong password',
+      color: 'red'
+    })
   }
 }
 

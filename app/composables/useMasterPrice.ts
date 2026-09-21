@@ -2,6 +2,13 @@ import { ref } from 'vue'
 import { useAuth } from './useAuth'
 import { useProduksi } from './useProduksi'
 
+interface UpdatePricePayload {
+  v_id: number
+  v_amount: string | number
+  v_active: string | boolean | number
+  txtpassword: string
+}
+
 export const useMasterPrice = () => {
   const config = useRuntimeConfig()
   const { accessToken, logout } = useAuth()
@@ -195,18 +202,30 @@ export const useMasterPrice = () => {
   }
 
   // 9. Update Price Row (Requires Password)
-  const updatePriceDetail = async (payload: { v_id: number, v_amount: string, v_active: string, txtpassword: string }) => {
+  const updatePriceDetail = async (payload: UpdatePricePayload) => {
     isSaving.value = true
     try {
+      // Input type="number" dapat mengubah v-model menjadi number saat runtime.
+      // API Rust mengharapkan v_amount dan v_active sebagai JSON string.
+      const body = {
+        v_id: Number(payload.v_id),
+        v_amount: String(payload.v_amount),
+        v_active: String(payload.v_active),
+        txtpassword: String(payload.txtpassword)
+      }
+
       const res: any = await $fetch(`${config.public.apiBase || ''}/produksi/update-price-produksi`, {
         method: 'POST',
-        body: payload,
+        body,
         headers: { Authorization: `Bearer ${accessToken.value}` }
       })
       return { success: true, data: res.data }
-    } catch (err) {
+    } catch (err: any) {
       console.error('Error updatePriceDetail:', err)
-      return { success: false }
+      return {
+        success: false,
+        message: err?.data?.message || err?.data || err?.message || 'Gagal memperbarui harga'
+      }
     } finally {
       isSaving.value = false
     }

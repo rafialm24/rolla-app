@@ -577,10 +577,10 @@ const submitUpdatePrice = async () => {
     v_active: updatePriceForm.value.active ? '1' : '0',
     txtpassword: updatePriceForm.value.password
   })
-  if (res.success && res.data?.status === 1) {
-    toast.add({ title: 'Success', description: 'Price updated successfully', color: 'green' })
+  if (res.success) {
     isUpdatePriceModalOpen.value = false
-    loadDetailList()
+    await loadDetailList()
+    toast.add({ title: 'Success', description: 'Price updated successfully', color: 'green' })
   } else {
     toast.add({
       title: 'Error',

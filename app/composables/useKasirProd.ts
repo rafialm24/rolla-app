@@ -264,7 +264,7 @@ export const useKasirProd = () => {
   }
 
   // Get Print Data
-  const getPrintData = async (trxNum: string) => {
+  const getPrintData = async (trxNum: string | number): Promise<any[]> => {
     try {
       const res: any = await useApiFetch(`/produksi/kasir-produksi/get-list-print-trx-sales-produksi`, {
         method: 'GET',
@@ -274,10 +274,14 @@ export const useKasirProd = () => {
           v_id_prod: prodId.value
         }
       })
-      return res?.data || res
+
+      const data = res?.data ?? res
+      if (Array.isArray(data)) return data
+      if (Array.isArray(data?.data)) return data.data
+      return []
     } catch (error) {
       console.error('Error getPrintData:', error)
-      return null
+      return []
     }
   }
 
@@ -308,4 +312,3 @@ export const useKasirProd = () => {
     getPrintData
   }
 }
-

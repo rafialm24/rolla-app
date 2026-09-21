@@ -219,7 +219,20 @@ export const useMasterPrice = () => {
         body,
         headers: { Authorization: `Bearer ${accessToken.value}` }
       })
-      return { success: true, data: res.data }
+
+      // Endpoint dapat mengembalikan 1 secara langsung atau membungkusnya
+      // sebagai { data: 1 } / { status: 1 }.
+      const data = res?.data ?? res
+      const rawStatus = data && typeof data === 'object'
+        ? (data.status ?? data.data)
+        : data
+      const status = Number(rawStatus)
+
+      return {
+        success: status === 1,
+        status,
+        data
+      }
     } catch (err: any) {
       console.error('Error updatePriceDetail:', err)
       return {

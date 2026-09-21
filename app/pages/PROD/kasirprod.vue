@@ -271,11 +271,6 @@
       </UCard>
     </UModal>
     
-    <!-- HIDDEN PRINT AREA -->
-    <div id="print-area" class="hidden">
-      <!-- We will inject print content here dynamically -->
-      <div v-html="printHtml" class="print-container"></div>
-    </div>
   </NuxtLayout>
 </template>
 
@@ -607,83 +602,233 @@ const closeQrisModal = () => {
 
 // PRINT LOGIC
 const printHtml = ref('')
-const handlePrint = async (trxNum: string) => {
+
+const escapeReceiptText = (value: unknown) => String(value ?? '').replace(/[&<>"']/g, (char) => ({
+  '&': '&amp;',
+  '<': '&lt;',
+  '>': '&gt;',
+  '"': '&quot;',
+  "'": '&#039;'
+}[char] ?? char))
+
+const formatReceiptDate = (value: unknown) => {
+  if (!value) return '-'
+  const date = new Date(String(value))
+  if (Number.isNaN(date.getTime())) return escapeReceiptText(value)
+
+  return new Intl.DateTimeFormat('id-ID', {
+    day: '2-digit',
+    month: '2-digit',
+    year: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit'
+  }).format(date)
+}
+
+const handlePrint = async (trxNum: string | number) => {
   if (!trxNum) return
-  const res = await getPrintData(trxNum)
-  if (res && res.length > 0) {
-    const data = res.data[0]
-    
-    // Construct HTML template for printJS
-    let itemsHtml = ''
-    res.data.forEach((item: any) => {
-      const v_list = (item.discount === 0) ? `${item.qty} x ${item.price_origin.toLocaleString('id-ID')}` : 'Discount'
-      const v_sub = (item.discount !== 0) ? `-${item.sub_price.toLocaleString('id-ID')}` : item.sub_price.toLocaleString('id-ID')
-      itemsHtml += `<tr><td align="left" valign="top" style="font-size:12px;">${item.name_produk}</td><td align="right" valign="top"></td></tr>
-                    <tr><td align="left" valign="top" style="font-size:12px;">${v_list}</td><td align="right" valign="top" style="font-size:12px;">${v_sub}</td></tr>`
-    })
+  const items = await getPrintData(trxNum)
+
+  if (items.length === 0) {
+    toast.add({ title: 'Print gagal', description: 'Data transaksi tidak ditemukan', color: 'orange' })
+    return
+  }
+
+  try {
+    const data = items[0]
+
+    const logoUrl = new URL('/rolla-logo.jpg', window.location.origin).href
+    const itemsHtml = items.map((item: any) => {
+      const discount = Number(item.discount) || 0
+      const discountText = discount > 0
+        ? `<span class="item-discount">Diskon ${formatNumber(discount)}</span>`
+        : ''
+
+      return `
+        <tr class="item-name-row">
+          <td colspan="3">${escapeReceiptText(item.name_produk || 'Produk')}</td>
+        </tr>
+        <tr class="item-detail-row">
+          <td>${formatNumber(item.qty)} &times; Rp ${formatNumber(item.price_origin)}</td>
+          <td>${discountText}</td>
+          <td>Rp ${formatNumber(item.sub_price)}</td>
+        </tr>
+      `
+    }).join('')
     
     let promoMsg = ''
     if (data.foarmem === true) {
-      promoMsg = `<div style="margin-top: 10px; font-weight: bold; font-size: 11px; border: 1px dashed black; padding: 3px;">KODE: ${data.kode_member || ''}</div>`
+      promoMsg = `
+        <div class="member-code">
+          <span>KODE MEMBER</span>
+          <strong>${escapeReceiptText(data.kode_member || '-')}</strong>
+        </div>
+      `
     }
 
     printHtml.value = `
-      <div style="width:100%; font-family:Arial; padding: 10px; color: black;">
-        <table border="0" style="width: 100%;">
-          <tr>
-            <td style="width: 20%; text-align:left; vertical-align:top;">
-              <div style="width:60px; height:60px; background:#ddd; display:flex; align-items:center; justify-content:center; font-size:10px;">LOGO</div>
-            </td>
-            <td style="width: 80%; text-align:left; vertical-align:middle; padding-left:10px;">
-              <div style="font-size:18px; font-weight:bold;">${data.name_prod || ''}</div>
-              <div style="font-size:12px;">${data.slogan || ''}</div>
-              <div style="font-size:10px;">${data.alamat_prod || ''}</div>
-            </td>
-          </tr>
-          <tr>
-            <td colspan="2" style="font-size:10px; padding-top:8px;">
-              <table border="0" style="width: 100%;">
-                <tr><td>No</td><td>: ${data.trx_num || ''}</td><td></td></tr>
-                <tr><td>OPR</td><td>: ${data.usrnm || ''}</td><td align="right">${data.create_date || ''}</td></tr>
-              </table>
-            </td>
-          </tr>
-          <tr><td colspan="2"><hr style="border-top:1px dashed black;"></td></tr>
-          <tr>
-            <td colspan="2" align="left" valign="top">
-              <table border="0" style="width: 100%;">
-                ${itemsHtml}
-              </table>
-              <br/>
-              <table border="0" style="width: 100%; font-size:12px;" align="right">
-                <tr><td align="right">Subtotal:</td><td align="right" style="width:80px;">${(data.sub_total || 0).toLocaleString('id-ID')}</td></tr>
-                <tr><td align="right">Potongan:</td><td align="right">-${(data.potongan || 0).toLocaleString('id-ID')}</td></tr>
-                <tr><td align="right">Total:</td><td align="right"><b>${(data.total || 0).toLocaleString('id-ID')}</b></td></tr>
-                <tr><td align="right">Bayar:</td><td align="right">${(data.bayar || 0).toLocaleString('id-ID')}</td></tr>
-                <tr><td align="right">Kembalian:</td><td align="right">${(data.kembalian || 0).toLocaleString('id-ID')}</td></tr>
-              </table>
-            </td>
-          </tr>
-          <tr><td colspan="2"><hr style="border-top:1px dashed black;"></td></tr>
-          <tr>
-            <td colspan="2" align="center" style="font-size: 10px; padding-top: 10px;">
-              Terimakasih<br>Barang yang sudah dibeli tidak dapat dikembalikan
-              ${promoMsg}
-            </td>
-          </tr>
+      <div class="rolla-receipt">
+        <header class="receipt-header">
+          <img class="receipt-logo" src="${logoUrl}" alt="Rolla Bakery" />
+          <div class="outlet-name">${escapeReceiptText(data.name_prod || 'ROLLA BAKERY')}</div>
+          <div class="outlet-slogan">${escapeReceiptText(data.slogan || '')}</div>
+          <div class="outlet-address">${escapeReceiptText(data.alamat_prod || '')}</div>
+          <div class="receipt-label">STRUK PEMBAYARAN</div>
+        </header>
+
+        <div class="dash-line"></div>
+
+        <table class="receipt-meta">
+          <tr><td>No. Transaksi</td><td>:</td><td>${escapeReceiptText(data.trx_num)}</td></tr>
+          <tr><td>Tanggal</td><td>:</td><td>${formatReceiptDate(data.create_date)}</td></tr>
+          <tr><td>Kasir</td><td>:</td><td>${escapeReceiptText(data.user_name || data.usrnm || '-')}</td></tr>
         </table>
+
+        <div class="dash-line"></div>
+
+        <table class="receipt-items">
+          <thead><tr><th colspan="2">ITEM</th><th>JUMLAH</th></tr></thead>
+          <tbody>${itemsHtml}</tbody>
+        </table>
+
+        <div class="dash-line"></div>
+
+        <table class="receipt-totals">
+          <tr><td>Subtotal</td><td>Rp ${formatNumber(data.sub_total)}</td></tr>
+          <tr><td>Potongan</td><td>- Rp ${formatNumber(data.potongan)}</td></tr>
+          <tr class="grand-total"><td>TOTAL</td><td>Rp ${formatNumber(data.total)}</td></tr>
+          <tr><td>Bayar</td><td>Rp ${formatNumber(data.bayar)}</td></tr>
+          <tr><td>Kembalian</td><td>Rp ${formatNumber(data.kembalian)}</td></tr>
+        </table>
+
+        <div class="dash-line"></div>
+
+        <footer class="receipt-footer">
+          <div class="thank-you">TERIMA KASIH</div>
+          <div>Telah berbelanja di Rolla Bakery</div>
+          <div class="return-note">Barang yang sudah dibeli tidak dapat dikembalikan.</div>
+          ${promoMsg}
+          <div class="receipt-id">#${escapeReceiptText(data.trx_num)}</div>
+        </footer>
       </div>
     `
     
-    // Print JS call
-    setTimeout(async () => {
-      const printJS = (await import('print-js')).default
-      printJS({
-        printable: 'print-area',
-        type: 'html',
-        targetStyles: ['*']
-      })
-    }, 200)
+    const printJS = (await import('print-js')).default
+    printJS({
+      printable: printHtml.value,
+      type: 'raw-html',
+      documentTitle: `Struk ${data.trx_num || ''}`,
+      style: `
+        @page { margin: 4mm; }
+        html, body { margin: 0; padding: 0; background: #fff; color: #000; }
+        body { font-family: Arial, Helvetica, sans-serif; font-size: 10px; }
+        table { width: 100%; border-collapse: collapse; }
+        .rolla-receipt {
+          width: calc(100% - 4mm);
+          max-width: 76mm;
+          margin: 0 auto;
+          padding: 2mm;
+          box-sizing: border-box;
+          break-inside: avoid;
+          page-break-inside: avoid;
+        }
+        .receipt-header { text-align: center; }
+        .receipt-logo { display: block; width: 22mm; height: 22mm; margin: 0 auto 2mm; border-radius: 50%; object-fit: cover; }
+        .outlet-name { font-size: 15px; font-weight: 800; letter-spacing: .5px; text-transform: uppercase; }
+        .outlet-slogan { margin-top: 1mm; font-size: 9px; font-weight: 700; letter-spacing: .4px; text-transform: uppercase; }
+        .outlet-address { margin: 1mm auto 0; max-width: 60mm; font-size: 8px; line-height: 1.35; }
+        .receipt-label { display: inline-block; margin-top: 2.5mm; padding: 1mm 3mm; border: 1px solid #111; border-radius: 10px; font-size: 8px; font-weight: 700; letter-spacing: 1px; }
+        .dash-line { margin: 2.5mm 0; border-top: 1px dashed #555; }
+        .receipt-meta td { padding: .55mm 0; vertical-align: top; }
+        .receipt-meta td:first-child { width: 21mm; color: #333; }
+        .receipt-meta td:nth-child(2) { width: 3mm; text-align: center; }
+        .receipt-meta td:last-child { font-weight: 700; overflow-wrap: anywhere; }
+        .receipt-items th { padding: 0 0 1.5mm; border-bottom: 1px solid #999; font-size: 8px; text-align: left; letter-spacing: .8px; }
+        .receipt-items th:last-child { text-align: right; }
+        .item-name-row td { padding-top: 1.6mm; font-size: 10px; font-weight: 700; text-transform: uppercase; }
+        .item-detail-row td { padding: .6mm 0 1.2mm; color: #333; font-size: 9px; vertical-align: top; }
+        .item-detail-row td:nth-child(2) { padding-left: 1mm; color: #555; }
+        .item-detail-row td:last-child { text-align: right; white-space: nowrap; font-weight: 700; color: #111; }
+        .item-discount { font-size: 8px; font-style: italic; }
+        .receipt-totals { margin-left: auto; width: 46mm; }
+        .receipt-totals td { padding: .65mm 0; }
+        .receipt-totals td:first-child { text-align: left; }
+        .receipt-totals td:last-child { text-align: right; white-space: nowrap; }
+        .grand-total td { padding: 1.5mm 0; border-top: 1px solid #111; border-bottom: 1px solid #111; font-size: 13px; font-weight: 800; }
+        .receipt-footer { text-align: center; font-size: 8px; line-height: 1.45; }
+        .thank-you { margin-bottom: .8mm; font-size: 11px; font-weight: 800; letter-spacing: 1px; }
+        .return-note { margin-top: 1.5mm; color: #444; }
+        .member-code { margin-top: 2.5mm; padding: 1.5mm; border: 1px dashed #555; border-radius: 2px; }
+        .member-code span { display: block; font-size: 7px; letter-spacing: .8px; }
+        .member-code strong { display: block; margin-top: .5mm; font-size: 11px; letter-spacing: 1px; }
+        .receipt-id { margin-top: 3mm; font-family: monospace; font-size: 8px; letter-spacing: .8px; color: #555; }
+
+        /* Printer thermal kecil, umumnya kertas 58 mm. */
+        @media print and (max-width: 65mm) {
+          @page { margin: 2mm; }
+          body { font-size: 8.5px; }
+          .rolla-receipt { width: 100%; max-width: none; padding: 1mm; }
+          .receipt-logo { width: 16mm; height: 16mm; margin-bottom: 1.5mm; }
+          .outlet-name { font-size: 12px; }
+          .outlet-slogan { font-size: 7.5px; }
+          .outlet-address { max-width: 50mm; font-size: 7px; }
+          .receipt-label { margin-top: 1.5mm; padding: .8mm 2mm; font-size: 7px; }
+          .dash-line { margin: 1.7mm 0; }
+          .receipt-meta td:first-child { width: 17mm; }
+          .receipt-meta td:nth-child(2) { width: 2mm; }
+          .receipt-items th { font-size: 7px; }
+          .item-name-row td { padding-top: 1.2mm; font-size: 8.5px; }
+          .item-detail-row td { font-size: 7.5px; }
+          .item-detail-row td:nth-child(2) { padding-left: .5mm; }
+          .receipt-totals { width: 100%; }
+          .grand-total td { font-size: 11px; }
+          .receipt-footer { font-size: 7px; }
+          .thank-you { font-size: 9px; }
+        }
+
+        /* Printer thermal reguler, umumnya kertas 80 mm. */
+        @media print and (min-width: 66mm) and (max-width: 109mm) {
+          .rolla-receipt { width: calc(100% - 4mm); max-width: 76mm; }
+        }
+
+        /* Printer kertas besar seperti A5 dan A4. */
+        @media print and (min-width: 110mm) {
+          @page { margin: 12mm; }
+          body { font-size: 11px; }
+          .rolla-receipt {
+            width: calc(100% - 12mm);
+            max-width: 170mm;
+            padding: 7mm 9mm;
+            border: 1px solid #d1d1d1;
+          }
+          .receipt-logo { width: 28mm; height: 28mm; margin-bottom: 3mm; }
+          .outlet-name { font-size: 21px; letter-spacing: 1px; }
+          .outlet-slogan { font-size: 11px; }
+          .outlet-address { max-width: 110mm; font-size: 9px; }
+          .receipt-label { margin-top: 3mm; padding: 1.2mm 5mm; font-size: 9px; }
+          .dash-line { margin: 4mm 0; }
+          .receipt-meta { max-width: 100mm; }
+          .receipt-meta td { padding: .8mm 0; }
+          .receipt-meta td:first-child { width: 28mm; }
+          .receipt-items th { padding-bottom: 2mm; font-size: 9px; }
+          .item-name-row td { padding-top: 2.5mm; font-size: 12px; }
+          .item-detail-row td { padding: 1mm 0 2mm; font-size: 10px; }
+          .receipt-totals { width: 78mm; }
+          .receipt-totals td { padding: 1mm 0; }
+          .grand-total td { padding: 2mm 0; font-size: 16px; }
+          .receipt-footer { font-size: 9px; }
+          .thank-you { font-size: 13px; }
+          .receipt-id { font-size: 9px; }
+        }
+      `,
+      onError: (printError: any) => {
+        console.error('Error printJS:', printError)
+        toast.add({ title: 'Print gagal', description: 'Dialog cetak tidak dapat dibuka', color: 'red' })
+      }
+    })
+  } catch (error) {
+    console.error('Error handlePrint:', error)
+    toast.add({ title: 'Print gagal', description: 'Struk tidak dapat diproses', color: 'red' })
   }
 }
 

@@ -6,7 +6,7 @@ export const usePurchaseForecast = () => {
   const { user } = useAuth()
 
   const categories = ref<any[]>([])
-  const selectedCategory = ref<number | null>(null)
+  const selectedCategory = ref<number | undefined>(undefined)
   const forecastData = ref<any[]>([])
   const isLoading = ref<boolean>(false)
 

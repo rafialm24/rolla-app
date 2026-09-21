@@ -42,7 +42,7 @@
         <div class="border border-slate-700 rounded-lg p-4 bg-slate-800/50">
           <h4 class="text-sm font-semibold text-slate-300 mb-2">Trend Produktivitas (Bulan Ini)</h4>
           <ClientOnly>
-            <apexchart v-if="trendSeries[0].data.length > 0" type="area" height="300" :options="trendOptions" :series="trendSeries"></apexchart>
+            <apexchart v-if="trendSeries[0]?.data.length" type="area" height="300" :options="trendOptions" :series="trendSeries"></apexchart>
             <div v-else class="h-[300px] flex items-center justify-center text-slate-500">Tidak ada data trend.</div>
           </ClientOnly>
         </div>
@@ -51,7 +51,7 @@
         <div class="border border-slate-700 rounded-lg p-4 bg-slate-800/50">
           <h4 class="text-sm font-semibold text-slate-300 mb-2">Produktivitas Group Pekerjaan</h4>
           <ClientOnly>
-            <apexchart v-if="groupSeries[0].data.length > 0" type="bar" height="300" :options="groupOptions" :series="groupSeries"></apexchart>
+            <apexchart v-if="groupSeries[0]?.data.length" type="bar" height="300" :options="groupOptions" :series="groupSeries"></apexchart>
             <div v-else class="h-[300px] flex items-center justify-center text-slate-500">Tidak ada data group.</div>
           </ClientOnly>
         </div>
@@ -154,17 +154,17 @@ const trendSeries = computed(() => {
 })
 
 const trendOptions = computed(() => ({
-  chart: { type: 'area', toolbar: { show: false }, background: 'transparent', foreColor: '#94a3b8' },
-  colors: ['#0ea5e9'],
+  chart: { type: 'area', toolbar: { show: false }, background: 'transparent', foreColor: '#c8ae8e' },
+  colors: ['#d7a84e'],
   stroke: { curve: 'smooth', width: 2 },
   fill: {
     type: 'gradient',
     gradient: { shadeIntensity: 1, opacityFrom: 0.7, opacityTo: 0.1, stops: [0, 90, 100] }
   },
   dataLabels: { enabled: false },
-  xaxis: { categories: trendCategories.value, axisBorder: { color: '#334155' }, axisTicks: { color: '#334155' } },
+  xaxis: { categories: trendCategories.value, axisBorder: { color: '#65432d' }, axisTicks: { color: '#65432d' } },
   yaxis: { title: { text: 'kg / jam' } },
-  grid: { borderColor: '#334155', strokeDashArray: 4 },
+  grid: { borderColor: '#5a3a27', strokeDashArray: 4 },
   tooltip: { theme: 'dark' }
 }))
 
@@ -195,12 +195,12 @@ const groupSeries = computed(() => {
 })
 
 const groupOptions = computed(() => ({
-  chart: { type: 'bar', toolbar: { show: false }, background: 'transparent', foreColor: '#94a3b8' },
-  colors: ['#10b981'],
+  chart: { type: 'bar', toolbar: { show: false }, background: 'transparent', foreColor: '#c8ae8e' },
+  colors: ['#b47b38'],
   plotOptions: { bar: { borderRadius: 4, horizontal: true } },
   dataLabels: { enabled: false },
-  xaxis: { categories: groupCategories.value, axisBorder: { color: '#334155' }, axisTicks: { color: '#334155' } },
-  grid: { borderColor: '#334155', strokeDashArray: 4 },
+  xaxis: { categories: groupCategories.value, axisBorder: { color: '#65432d' }, axisTicks: { color: '#65432d' } },
+  grid: { borderColor: '#5a3a27', strokeDashArray: 4 },
   tooltip: { theme: 'dark' }
 }))
 </script>

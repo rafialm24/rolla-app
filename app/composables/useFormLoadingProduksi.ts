@@ -120,8 +120,8 @@ export const useFormLoadingProduksi = () => {
             if (val) {
               const parts = String(val).split(';');
               if (parts.length === 2) {
-                Totalpo += parseFloat(parts[0].trim()) || 0;
-                Totalsale += parseFloat(parts[1].trim()) || 0;
+                Totalpo += parseFloat(parts[0]?.trim() ?? '0') || 0;
+                Totalsale += parseFloat(parts[1]?.trim() ?? '0') || 0;
               }
             }
           }

@@ -354,7 +354,7 @@ const {
 const { activeProdId } = useProduksi()
 
 // Filter State
-const today = new Date().toISOString().split('T')[0]
+const today = new Date().toISOString().slice(0, 10)
 const filterDateStart = ref(today)
 const filterDateSpk = ref(today)
 const searchProduk = ref('')
@@ -403,7 +403,7 @@ const loadProduk = async () => {
 
 const handleSetOrder = async () => {
   for (const item of produkSpkList.value) {
-    const qty = inputQty.value[item.id]
+    const qty = inputQty.value[item.id] ?? 0
     if (qty > 0) {
       await setSpk({
         v_id_item: item.id,
@@ -420,7 +420,7 @@ const handleSetOrder = async () => {
 
 const handleSetOrderNew = async () => {
   for (const item of produkSpkList.value) {
-    const qty = inputQty.value[item.id]
+    const qty = inputQty.value[item.id] ?? 0
     if (qty > 0) {
       await setSpkNew({
         v_id_item: item.id,

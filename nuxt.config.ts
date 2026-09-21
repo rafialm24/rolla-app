@@ -4,7 +4,7 @@ export default defineNuxtConfig({
   devtools: { enabled: true },
   css: ['~/assets/css/main.css'],
   modules: ['@nuxt/ui'],
-  server: {
+  devServer: {
     port: 3000,
     host: '0.0.0.0'
   },

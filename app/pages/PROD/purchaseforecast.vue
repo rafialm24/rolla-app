@@ -78,8 +78,7 @@ const handleExport = () => {
             searchable-placeholder="Cari kategori..."
             class="w-full sm:w-64"
             :ui="{ 
-              base: 'font-semibold',
-              color: { white: 'ring-1 ring-slate-300' }
+              base: 'font-semibold ring-1 ring-slate-300'
             }"
           >
             <template #label>

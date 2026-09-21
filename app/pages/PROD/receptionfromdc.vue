@@ -113,8 +113,7 @@ const handleCancel = async (row: any) => {
             searchable-placeholder="Cari SJ / DC Name..."
             class="w-full sm:w-80"
             :ui="{ 
-              base: 'font-semibold',
-              color: { white: 'ring-1 ring-slate-300' }
+              base: 'font-semibold ring-1 ring-slate-300'
             }"
           >
             <template #label>

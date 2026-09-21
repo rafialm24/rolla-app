@@ -102,7 +102,7 @@
               <div class="px-4 py-3 border-t border-slate-100 bg-slate-50/50 flex items-center justify-between">
                 <div class="flex items-center gap-3">
                   <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">Rows:</span>
-                  <USelectMenu v-model="masterPerPage" :options="[10, 20, 50, 100]" class="w-20" size="xs" @change="masterPage = 1; loadMasterList()" />
+                  <USelectMenu v-model="masterPerPage" :options="pageSizeOptions" value-attribute="value" option-attribute="label" class="w-20" size="xs" @change="masterPage = 1; loadMasterList()" />
                 </div>
                 <div class="flex flex-1 justify-center">
                   <UPagination v-model="masterPage" :page-count="masterPerPage" :total="totalMasterPrice" size="sm" @update:model-value="loadMasterList" />
@@ -295,7 +295,7 @@
               <div class="px-4 py-3 border-t border-slate-100 bg-slate-50/50 flex items-center justify-between">
                 <div class="flex items-center gap-3">
                   <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">Rows:</span>
-                  <USelectMenu v-model="detailPerPage" :options="[10, 20, 50, 100]" class="w-20" size="xs" @change="detailPage = 1; loadDetailList()" />
+                  <USelectMenu v-model="detailPerPage" :options="pageSizeOptions" value-attribute="value" option-attribute="label" class="w-20" size="xs" @change="detailPage = 1; loadDetailList()" />
                 </div>
                 <div class="flex flex-1 justify-center">
                   <UPagination v-model="detailPage" :page-count="detailPerPage" :total="totalDetail" size="sm" @update:model-value="loadDetailList" />
@@ -346,6 +346,8 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 import { useMasterPrice } from '~/composables/useMasterPrice'
+
+const pageSizeOptions = [10, 20, 50, 100].map(value => ({ label: String(value), value }))
 
 definePageMeta({ layout: false })
 

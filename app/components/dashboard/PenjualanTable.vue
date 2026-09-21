@@ -204,8 +204,8 @@ const selectedCabangId = ref<number | null>(null)
 onMounted(() => {
   const now = new Date()
   const firstDay = new Date(now.getFullYear(), now.getMonth(), 1)
-  const fDayStr = firstDay.toISOString().split('T')[0]
-  const nDayStr = now.toISOString().split('T')[0]
+  const fDayStr = firstDay.toISOString().slice(0, 10)
+  const nDayStr = now.toISOString().slice(0, 10)
   
   storeStartDate.value = fDayStr; storeEndDate.value = nDayStr
   cabangStartDate.value = fDayStr; cabangEndDate.value = nDayStr

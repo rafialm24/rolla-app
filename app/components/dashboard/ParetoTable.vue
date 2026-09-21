@@ -113,8 +113,8 @@ onMounted(() => {
   const now = new Date()
   const firstDay = new Date(now.getFullYear(), now.getMonth(), 1)
   
-  startDate.value = firstDay.toISOString().split('T')[0]
-  endDate.value = now.toISOString().split('T')[0]
+  startDate.value = firstDay.toISOString().slice(0, 10)
+  endDate.value = now.toISOString().slice(0, 10)
   
   fetchPareto()
 })

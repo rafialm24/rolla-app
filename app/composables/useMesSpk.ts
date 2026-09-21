@@ -134,7 +134,7 @@ export const useMesSpk = () => {
     try {
       // Shift / Karyawan
       const qShift = new URLSearchParams()
-      const todayStr = new Date().toISOString().split('T')[0]
+      const todayStr = new Date().toISOString().slice(0, 10)
       qShift.append('v_tanggal', todayStr)
       const resShift: any = await $fetch(`${config.public.apiBase || ''}/produksi/mes/main-power-combo-rolla?${qShift.toString()}`, {
         headers: { Authorization: `Bearer ${accessToken.value}` }

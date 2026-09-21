@@ -13,6 +13,7 @@ export const useInventoryFG = (idClass: number = 1) => {
   const rowsPerPage = ref(10)
   const totalPages = ref(0)
   const searchKeyword = ref('')
+  const selectedItemId = ref<number | undefined>(undefined)
 
   // Fetch combo dropdown item berdasarkan lokasi produksi
   const fetchComboFinishGood = async (lokasiId?: number) => {
@@ -60,6 +61,7 @@ export const useInventoryFG = (idClass: number = 1) => {
         {
           query: {
             var_where: searchKeyword.value || '',
+            v_id_item: selectedItemId.value || 0,
             var_page_number: currentPage.value,
             var_row_page: rowsPerPage.value,
             v_id_class: idClass,
@@ -131,6 +133,7 @@ export const useInventoryFG = (idClass: number = 1) => {
     rowsPerPage,
     totalPages,
     searchKeyword,
+    selectedItemId,
     fetchComboFinishGood,
     fetchStockOnHand,
     addItemInventoryArea,

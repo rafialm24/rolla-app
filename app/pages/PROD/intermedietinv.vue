@@ -269,6 +269,7 @@ const {
   rowsPerPage,
   totalPages,
   searchKeyword,
+  selectedItemId,
   fetchComboFinishGood,
   fetchStockOnHand,
   addItemInventoryArea,
@@ -294,8 +295,6 @@ watch(() => addForm.value.v_id_item, async (newId) => {
     uomComboList.value = []
   }
 })
-
-const selectedComboId = ref<number | null>(null)
 
 let searchTimer: ReturnType<typeof setTimeout> | null = null
 

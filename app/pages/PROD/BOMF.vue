@@ -95,7 +95,7 @@
                       <USelect v-model="row._kategory_artikel" :options="categoryBomList.map(c => ({label: c.name_prod_cate, value: c.id}))" placeholder="--Pilih--" size="xs" :ui="{ rounded: 'rounded-md', base: 'font-semibold text-xs' }" />
                     </td>
                     <td class="px-3 py-2">
-                      <USelect v-model="row._dough_id" :options="(row._uomOptions || []).map(u => ({label: u.name_prod_cate, value: u.id}))" placeholder="--Pilih--" size="xs" :ui="{ rounded: 'rounded-md', base: 'font-semibold text-xs' }" />
+                      <USelect v-model="row._dough_id" :options="toUomOptions(row._uomOptions)" placeholder="--Pilih--" size="xs" :ui="{ rounded: 'rounded-md', base: 'font-semibold text-xs' }" />
                     </td>
                     <td class="px-3 py-2"><UInput type="number" v-model="row._durability" size="xs" :ui="{ base: 'text-right font-black', rounded: 'rounded-md' }" /></td>
                     <td class="px-3 py-2"><UInput type="number" v-model="row._labor_cost" size="xs" :ui="{ base: 'text-right font-black text-blue-600', rounded: 'rounded-md' }" /></td>
@@ -350,6 +350,9 @@
 <script setup lang="ts">
 import { ref, onMounted, watch, computed } from 'vue'
 import { useProduksi } from '../../composables/useProduksi'
+
+const toUomOptions = (options: any[] | undefined) =>
+  (options ?? []).map(option => ({ label: option.name_prod_cate, value: option.id }))
 import { useBom } from '../../composables/useBom'
 
 const { activeProdId } = useProduksi()

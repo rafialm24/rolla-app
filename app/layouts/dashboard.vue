@@ -1,5 +1,5 @@
 <template>
-  <div class="h-screen bg-slate-50 flex overflow-hidden font-sans">
+  <div class="rolla-dashboard h-screen bg-slate-50 flex overflow-hidden font-sans">
     
     <!-- Sidebar -->
     <DashboardSidebar 
@@ -12,8 +12,8 @@
       <DashboardHeader @toggle-sidebar="isSidebarOpen = !isSidebarOpen" />
 
       <!-- Main Content -->
-      <main class="flex-1 overflow-y-auto">
-        <div class="w-full h-full p-4">
+      <main class="dashboard-workspace flex-1 overflow-y-auto">
+        <div class="relative z-[1] w-full min-h-full p-4 lg:p-5">
           <slot />
         </div>
       </main>

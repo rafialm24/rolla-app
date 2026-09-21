@@ -1,16 +1,16 @@
 <template>
-  <header class="h-16 bg-white border-b border-slate-200 flex items-center justify-between px-6 sticky top-0 z-30">
+  <header class="h-16 bg-[#fffaf2]/95 backdrop-blur-xl border-b border-amber-900/10 flex items-center justify-between px-6 sticky top-0 z-30 shadow-[0_8px_28px_rgba(76,44,23,0.06)]">
     <div class="flex items-center">
       <button
         @click="$emit('toggle-sidebar')"
-        class="p-2 -ml-2 text-slate-500 hover:bg-slate-100 rounded-lg lg:hidden"
+        class="p-2 -ml-2 text-[#80634d] hover:bg-amber-900/5 rounded-lg lg:hidden"
       >
         <span class="sr-only">Toggle Sidebar</span>
         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
         </svg>
       </button>
-      <h2 class="ml-4 lg:ml-0 text-lg font-semibold text-slate-800">{{ pageTitle }}</h2>
+      <h2 class="ml-4 lg:ml-0 text-lg font-bold text-[#3a2418] tracking-tight">{{ pageTitle }}</h2>
     </div>
 
     <div class="flex items-center space-x-4">
@@ -21,9 +21,9 @@
             v-model="searchQuery"
             type="text"
             placeholder="Search module..."
-            class="w-64 bg-slate-100 border border-transparent rounded-full py-2 pl-10 pr-4 text-sm focus:ring-2 focus:ring-theme-primary focus:bg-white focus:border-theme-primary/20 transition-all outline-none"
+            class="w-64 bg-[#f4eadc] border border-amber-900/5 rounded-full py-2 pl-10 pr-4 text-sm text-[#513827] placeholder-[#aa8e75] focus:bg-[#fffdf8] focus:border-amber-600/30 transition-all outline-none"
             @focus="isSearchFocused = true"
-            @blur="setTimeout(() => isSearchFocused = false, 200)"
+            @blur="handleSearchBlur"
           />
           <span class="absolute left-3 top-2.5 text-slate-400">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -35,7 +35,7 @@
         <!-- Search Results Dropdown -->
         <div 
           v-if="isSearchFocused && searchQuery.length > 1"
-          class="absolute top-full mt-2 left-0 w-80 bg-white rounded-2xl shadow-2xl border border-slate-100 overflow-hidden z-50 backdrop-blur-xl bg-white/95"
+          class="absolute top-full mt-2 left-0 w-80 bg-[#fffaf2]/95 rounded-2xl shadow-[0_20px_55px_rgba(65,35,18,0.2)] border border-amber-900/10 overflow-hidden z-50 backdrop-blur-xl"
         >
           <div v-if="filteredResults.length === 0" class="p-4 text-center text-slate-500 text-sm">
             No modules found for "{{ searchQuery }}"
@@ -48,10 +48,10 @@
               v-for="result in filteredResults"
               :key="result.path"
               @click="navigateToModule(result.path)"
-              class="w-full px-4 py-2.5 text-left hover:bg-theme-primary/5 group transition-colors flex items-center justify-between"
+              class="w-full px-4 py-2.5 text-left hover:bg-amber-500/10 group transition-colors flex items-center justify-between"
             >
               <div class="flex flex-col">
-                <span class="text-sm font-bold text-slate-700 group-hover:text-theme-primary transition-colors">
+                <span class="text-sm font-bold text-slate-700 group-hover:text-amber-700 transition-colors">
                   {{ result.name }}
                 </span>
                 <span class="text-[10px] text-slate-400 uppercase font-medium">
@@ -67,18 +67,18 @@
       </div>
 
       <!-- Notifications -->
-      <button class="p-2 text-slate-500 hover:bg-slate-100 rounded-full transition-colors relative">
+      <button class="p-2 text-[#80634d] hover:text-amber-700 hover:bg-amber-900/5 rounded-full transition-colors relative">
         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
         </svg>
-        <span class="absolute top-2 right-2 w-2 h-2 bg-theme-primary rounded-full border-2 border-white"></span>
+        <span class="absolute top-2 right-2 w-2 h-2 bg-amber-500 rounded-full border-2 border-[#fffaf2] shadow-[0_0_7px_rgba(217,164,65,0.8)]"></span>
       </button>
 
       <!-- User Profile -->
       <div class="relative" ref="profileRef">
         <button
           @click="isProfileOpen = !isProfileOpen"
-          class="flex items-center space-x-3 pl-4 border-l border-slate-200 hover:opacity-80 transition-opacity"
+          class="flex items-center space-x-3 pl-4 border-l border-amber-900/10 hover:opacity-80 transition-opacity"
         >
           <div class="text-right hidden sm:block">
             <p class="text-sm font-medium text-slate-900 leading-none">
@@ -89,7 +89,7 @@
             </p>
           </div>
           <!-- Avatar: foto jika ada, fallback ke inisial -->
-          <div class="w-10 h-10 rounded-full overflow-hidden border-2 border-white shadow-sm flex-shrink-0">
+          <div class="w-10 h-10 rounded-full overflow-hidden border-2 border-amber-300/70 shadow-[0_4px_14px_rgba(120,75,31,0.16)] flex-shrink-0">
             <img
               v-if="userProfile?.foto"
               :src="userProfile.foto"
@@ -99,7 +99,7 @@
             />
             <div
               v-else
-              class="w-full h-full bg-theme-primary flex items-center justify-center text-white font-bold uppercase text-sm"
+              class="w-full h-full bg-gradient-to-br from-amber-300 to-amber-700 flex items-center justify-center text-white font-bold uppercase text-sm"
             >
               {{ avatarInitial }}
             </div>
@@ -110,11 +110,11 @@
         <transition name="fade-drop">
           <div
             v-if="isProfileOpen"
-            class="absolute right-0 top-full mt-3 w-72 bg-white rounded-2xl shadow-2xl border border-slate-100 overflow-hidden z-50"
+            class="absolute right-0 top-full mt-3 w-72 bg-[#fffaf2] rounded-2xl shadow-[0_22px_60px_rgba(65,35,18,0.22)] border border-amber-900/10 overflow-hidden z-50"
           >
             <!-- Profile Header -->
-            <div class="bg-gradient-to-br from-theme-primary/10 to-indigo-500/10 p-5 flex items-center space-x-4">
-              <div class="w-16 h-16 rounded-full overflow-hidden border-4 border-white shadow-md flex-shrink-0">
+            <div class="bg-gradient-to-br from-amber-100 via-[#f7ead7] to-amber-500/10 p-5 flex items-center space-x-4">
+              <div class="w-16 h-16 rounded-full overflow-hidden border-4 border-[#fffaf2] shadow-md flex-shrink-0">
                 <img
                   v-if="userProfile?.foto"
                   :src="userProfile.foto"
@@ -123,7 +123,7 @@
                 />
                 <div
                   v-else
-                  class="w-full h-full bg-theme-primary flex items-center justify-center text-white font-bold text-xl uppercase"
+                  class="w-full h-full bg-gradient-to-br from-amber-300 to-amber-700 flex items-center justify-center text-white font-bold text-xl uppercase"
                 >
                   {{ avatarInitial }}
                 </div>
@@ -132,7 +132,7 @@
                 <p class="font-bold text-slate-800 text-sm leading-tight truncate">
                   {{ userProfile?.nama_lengkap || user?.nik || '-' }}
                 </p>
-                <p class="text-xs text-theme-primary font-semibold mt-0.5 truncate">
+                <p class="text-xs text-amber-700 font-semibold mt-0.5 truncate">
                   {{ userProfile?.nama_jabatan || '-' }}
                 </p>
                 <p class="text-[10px] text-slate-400 mt-0.5 truncate">
@@ -215,6 +215,12 @@ const handleLogout = async () => {
 
 const searchQuery = ref('')
 const isSearchFocused = ref(false)
+
+const handleSearchBlur = () => {
+  window.setTimeout(() => {
+    isSearchFocused.value = false
+  }, 200)
+}
 
 const pageTitle = computed(() => {
   const path = route.path.split('/').pop()

@@ -10,10 +10,10 @@
     ]"
   >
     <!-- Main Sidebar Column -->
-    <div class="bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 backdrop-blur-2xl border-r border-white/10 flex flex-col h-full w-72 flex-shrink-0 relative overflow-hidden shadow-2xl shadow-indigo-900/20">
+    <div class="bg-gradient-to-b from-[#180b07] via-[#28150d] to-[#140906] backdrop-blur-2xl border-r border-amber-300/15 flex flex-col h-full w-72 flex-shrink-0 relative overflow-hidden shadow-2xl shadow-amber-950/30">
       <!-- Ambient Glow Effects -->
-      <div class="absolute top-0 left-0 w-full h-80 bg-gradient-to-br from-indigo-500/20 to-sky-500/10 rounded-full blur-[60px] pointer-events-none"></div>
-      <div class="absolute bottom-0 right-0 w-full h-80 bg-gradient-to-tl from-purple-500/10 to-transparent rounded-full blur-[60px] pointer-events-none"></div>
+      <div class="absolute top-0 left-0 w-full h-80 bg-gradient-to-br from-amber-500/20 to-orange-700/10 rounded-full blur-[60px] pointer-events-none"></div>
+      <div class="absolute bottom-0 right-0 w-full h-80 bg-gradient-to-tl from-amber-700/10 to-transparent rounded-full blur-[60px] pointer-events-none"></div>
       
       <!-- App Header -->
       <div class="flex flex-col px-4 pt-6 pb-5 flex-shrink-0 z-20 space-y-5 relative">
@@ -27,8 +27,8 @@
             </div>
           </div>
           <div :class="['flex flex-col transition-opacity duration-300 whitespace-nowrap ml-3', isHovered || isOpen ? 'opacity-100' : 'opacity-0 w-0 overflow-hidden']">
-            <span class="text-lg font-black text-white tracking-tight leading-none">ROLLA<span class="text-orange-500">.</span></span>
-            <span class="text-[9px] font-bold text-slate-500 tracking-widest uppercase mt-0.5">Enterprise System</span>
+            <span class="text-lg font-black text-[#fff8e8] tracking-tight leading-none">ROLLA<span class="text-amber-400">.</span></span>
+            <span class="text-[9px] font-bold text-amber-200/45 tracking-widest uppercase mt-0.5">Enterprise System</span>
           </div>
         </div>
 
@@ -45,7 +45,7 @@
               />
               <div
                 v-else
-                class="w-full h-full bg-gradient-to-tr from-indigo-500 to-purple-600 flex items-center justify-center"
+                class="w-full h-full bg-gradient-to-tr from-amber-700 to-amber-400 flex items-center justify-center"
               >
                 <span class="text-white font-bold text-sm uppercase">
                   {{ (userProfile?.nama_lengkap || user?.nik || 'A').charAt(0) }}
@@ -56,7 +56,7 @@
               <span class="text-xs font-bold text-slate-200 leading-tight truncate max-w-[140px]">
                 {{ userProfile?.nama_lengkap || user?.nik || 'Administrator' }}
               </span>
-              <span class="text-[9px] font-semibold text-sky-400/80 uppercase tracking-wider truncate max-w-[140px]">
+              <span class="text-[9px] font-semibold text-amber-300/80 uppercase tracking-wider truncate max-w-[140px]">
                 {{ userProfile?.nama_jabatan || 'Super User' }}
               </span>
             </div>
@@ -75,7 +75,7 @@
               class="w-full flex items-center bg-white/5 hover:bg-white/10 border border-white/10 text-slate-200 text-[10px] font-black py-2.5 rounded-xl transition-all cursor-pointer uppercase tracking-widest shadow-lg backdrop-blur-sm group/loc"
             >
               <div class="w-11 flex justify-center flex-shrink-0">
-                <UIcon name="i-heroicons-map-pin" class="w-4 h-4 text-emerald-400 group-hover/loc:scale-110 transition-transform" />
+                <UIcon name="i-heroicons-map-pin" class="w-4 h-4 text-amber-400 group-hover/loc:scale-110 transition-transform" />
               </div>
               <div :class="['flex flex-1 items-center justify-between pr-3 transition-opacity duration-300', isHovered || isOpen ? 'opacity-100 w-auto' : 'opacity-0 w-0 overflow-hidden']">
                 <span class="truncate">{{ activeProdName }}</span>
@@ -89,9 +89,9 @@
                 :key="prod.id"
                 @click="selectLocation(prod.id)"
                 class="w-full text-left px-3 py-2.5 text-[10px] font-black uppercase tracking-widest rounded-lg transition-colors flex items-center gap-2"
-                :class="activeProdId == prod.id ? 'bg-sky-500/20 text-sky-400' : 'text-slate-400 hover:bg-white/5 hover:text-white'"
+                :class="activeProdId == prod.id ? 'bg-amber-500/15 text-amber-300' : 'text-stone-400 hover:bg-white/5 hover:text-amber-50'"
               >
-                <div class="w-1.5 h-1.5 rounded-full" :class="activeProdId == prod.id ? 'bg-sky-400 shadow-[0_0_8px_rgba(56,189,248,0.8)]' : 'bg-transparent'"></div>
+                <div class="w-1.5 h-1.5 rounded-full" :class="activeProdId == prod.id ? 'bg-amber-400 shadow-[0_0_8px_rgba(251,191,36,0.65)]' : 'bg-transparent'"></div>
                 {{ prod.name_prod }}
               </button>
             </div>
@@ -99,7 +99,7 @@
         </div>
 
         <!-- Search Bar -->
-        <div class="relative mt-2 flex items-center bg-black/20 border border-white/5 rounded-xl overflow-hidden focus-within:ring-1 focus-within:ring-sky-500/50 focus-within:bg-black/40 transition-all">
+        <div class="relative mt-2 flex items-center bg-black/20 border border-amber-200/10 rounded-xl overflow-hidden focus-within:ring-1 focus-within:ring-amber-400/50 focus-within:bg-black/40 transition-all">
           <div class="w-11 py-2.5 flex justify-center flex-shrink-0 cursor-pointer text-slate-500" @click="isHovered = true">
             <UIcon name="i-heroicons-magnifying-glass" class="w-4 h-4" />
           </div>
@@ -118,7 +118,7 @@
             <!-- Level 1: Root Menu Item -->
             <div class="group/nav relative">
               <!-- Active Highlight Decorator -->
-              <div v-if="expandedSubMenus.includes(menu.id_menu) || (isRouteActive(menu.mn_pth) && !menu.submenu?.length)" class="absolute left-0 top-0 bottom-0 w-1 bg-sky-400 rounded-r-full shadow-[0_0_10px_rgba(56,189,248,0.8)] z-10"></div>
+              <div v-if="expandedSubMenus.includes(menu.id_menu) || (isRouteActive(menu.mn_pth) && !menu.submenu?.length)" class="absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b from-amber-300 to-amber-600 rounded-r-full shadow-[0_0_12px_rgba(217,164,65,0.65)] z-10"></div>
               
               <!-- Case A: Has Submenus (Toggle Button) -->
               <button
@@ -127,11 +127,11 @@
                 class="w-full flex items-center text-[12px] font-black uppercase tracking-wider transition-all rounded-xl relative z-10 py-2 px-1 hover:bg-white/5"
                 :class="[expandedSubMenus.includes(menu.id_menu) ? 'text-white bg-white/5' : 'text-slate-400']"
               >
-                <div class="w-10 py-1 flex justify-center flex-shrink-0 transition-colors" :class="expandedSubMenus.includes(menu.id_menu) ? 'text-sky-400' : 'text-slate-500 group-hover/nav:text-slate-300'" v-html="getProfessionalIcon(menu.mn_nm)"></div>
+                <div class="w-10 py-1 flex justify-center flex-shrink-0 transition-colors" :class="expandedSubMenus.includes(menu.id_menu) ? 'text-amber-400' : 'text-stone-500 group-hover/nav:text-amber-200'" v-html="getProfessionalIcon(menu.mn_nm)"></div>
                 <div :class="['flex flex-1 items-center justify-between pr-3 transition-opacity duration-300', isHovered || isOpen ? 'opacity-100 w-auto' : 'opacity-0 w-0 overflow-hidden']">
                   <span class="truncate">{{ menu.mn_nm }}</span>
                   <UIcon name="i-heroicons-chevron-right" 
-                    :class="['w-3.5 h-3.5 transition-transform duration-300 opacity-50 flex-shrink-0', expandedSubMenus.includes(menu.id_menu) ? 'rotate-90 text-sky-400 opacity-100' : '']"
+                    :class="['w-3.5 h-3.5 transition-transform duration-300 opacity-50 flex-shrink-0', expandedSubMenus.includes(menu.id_menu) ? 'rotate-90 text-amber-400 opacity-100' : '']"
                   />
                 </div>
               </button>
@@ -143,7 +143,7 @@
                 class="w-full flex items-center text-[12px] font-black uppercase tracking-wider transition-all rounded-xl relative z-10 py-2 px-1 hover:bg-white/5"
                 :class="[isRouteActive(menu.mn_pth) ? 'text-white bg-white/5' : 'text-slate-400']"
               >
-                <div class="w-10 py-1 flex justify-center flex-shrink-0 transition-colors" :class="isRouteActive(menu.mn_pth) ? 'text-sky-400 drop-shadow-[0_0_8px_rgba(56,189,248,0.5)]' : 'text-slate-500 group-hover/nav:text-slate-300'" v-html="getProfessionalIcon(menu.mn_nm)"></div>
+                <div class="w-10 py-1 flex justify-center flex-shrink-0 transition-colors" :class="isRouteActive(menu.mn_pth) ? 'text-amber-400 drop-shadow-[0_0_8px_rgba(217,164,65,0.55)]' : 'text-stone-500 group-hover/nav:text-amber-200'" v-html="getProfessionalIcon(menu.mn_nm)"></div>
                 <span :class="['truncate transition-opacity duration-300', isHovered || isOpen ? 'opacity-100 w-auto' : 'opacity-0 w-0 overflow-hidden']">{{ menu.mn_nm }}</span>
               </NuxtLink>
             </div>
@@ -159,10 +159,10 @@
                 :key="sub.id_sb_mn"
                 :to="formatPath(sub.mn_pth)"
                 class="flex items-center px-4 py-2 text-[11px] font-bold uppercase tracking-widest text-slate-400 rounded-lg transition-all hover:text-white hover:bg-white/5 relative group/item"
-                active-class="!text-sky-400 bg-sky-500/10 font-black"
+                active-class="!text-amber-300 bg-amber-500/10 font-black"
               >
-                <div class="absolute -left-4 top-1/2 w-3.5 border-t border-white/10 group-hover/item:border-sky-400/50 group-[.router-link-active]/item:border-sky-400 transition-colors"></div>
-                <div class="w-1.5 h-1.5 rounded-full border border-current mr-2 flex-shrink-0 transition-colors group-[.router-link-active]/item:bg-sky-400"></div>
+                <div class="absolute -left-4 top-1/2 w-3.5 border-t border-white/10 group-hover/item:border-amber-400/50 group-[.router-link-active]/item:border-amber-400 transition-colors"></div>
+                <div class="w-1.5 h-1.5 rounded-full border border-current mr-2 flex-shrink-0 transition-colors group-[.router-link-active]/item:bg-amber-400"></div>
                 {{ sub.mn_sb_nm }}
               </NuxtLink>
             </div>
@@ -171,8 +171,8 @@
       </div>
       
       <!-- Footer Info -->
-      <div class="px-6 py-4 border-t border-white/10 bg-slate-950/50 text-center transition-opacity duration-300" :class="isHovered || isOpen ? 'opacity-100' : 'opacity-0'">
-        <p class="text-[10px] font-bold bg-clip-text text-transparent bg-gradient-to-r from-indigo-400 to-sky-400 tracking-widest uppercase">Version 2.0.1</p>
+      <div class="px-6 py-4 border-t border-amber-200/10 bg-[#120805]/50 text-center transition-opacity duration-300" :class="isHovered || isOpen ? 'opacity-100' : 'opacity-0'">
+        <p class="text-[10px] font-bold bg-clip-text text-transparent bg-gradient-to-r from-amber-300 to-yellow-600 tracking-widest uppercase">Version 2.0.1</p>
       </div>
     </div>
   </aside>
@@ -324,7 +324,7 @@ function abbreviate(name: string) {
 function getMenuIcon(name: string, isActive: boolean, customSize: string = 'w-7 h-7', index: number = 0) {
   const n = name.toLowerCase()
   let icon = ''
-  let color = isActive ? 'currentColor' : '#64748b' // Default gray for inactive
+  let color = isActive ? 'currentColor' : '#8f7968' // Warm neutral for inactive icons
 
   // Define icon paths
   if (n.includes('dashboard')) {

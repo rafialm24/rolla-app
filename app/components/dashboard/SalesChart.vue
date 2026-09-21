@@ -135,7 +135,7 @@ const chartOptions = (categories: string[]) => ({
     type: 'bar',
     toolbar: { show: false },
     background: 'transparent',
-    foreColor: '#94a3b8' // text-slate-400
+    foreColor: '#c8ae8e'
   },
   plotOptions: {
     bar: {
@@ -143,7 +143,7 @@ const chartOptions = (categories: string[]) => ({
       columnWidth: '60%',
     }
   },
-  colors: ['#0ea5e9', '#10b981', '#ef4444', '#f59e0b'], // Sky, Emerald, Red, Amber
+  colors: ['#d7a84e', '#9f6b32', '#c45e49', '#f0cf7a'],
   dataLabels: {
     enabled: false
   },
@@ -154,8 +154,8 @@ const chartOptions = (categories: string[]) => ({
   },
   xaxis: {
     categories: categories,
-    axisBorder: { color: '#334155' },
-    axisTicks: { color: '#334155' }
+    axisBorder: { color: '#65432d' },
+    axisTicks: { color: '#65432d' }
   },
   yaxis: {
     title: { text: 'Rupiah' },
@@ -168,7 +168,7 @@ const chartOptions = (categories: string[]) => ({
     }
   },
   grid: {
-    borderColor: '#334155',
+    borderColor: '#5a3a27',
     strokeDashArray: 4,
   },
   fill: {

@@ -345,7 +345,7 @@ const {
 } = useDiscountList()
 
 // Local State
-const selectedDate = ref(new Date().toISOString().split('T')[0])
+const selectedDate = ref(new Date().toISOString().slice(0, 10))
 const pageNumber = ref(1)
 const rowsPage = ref(10)
 
@@ -374,7 +374,7 @@ const formatNumber = (num: any) => {
 const formatDate = (dateStr: string) => {
   if (!dateStr) return '-'
   try {
-    return new Date(dateStr).toISOString().split('T')[0]
+    return new Date(dateStr).toISOString().slice(0, 10)
   } catch (e) {
     return dateStr
   }

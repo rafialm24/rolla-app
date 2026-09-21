@@ -8,7 +8,7 @@ export const useReceptionFromDc = () => {
   const { user } = useAuth()
 
   const deliveryOptions = ref<any[]>([])
-  const selectedSj = ref<string | null>(null)
+  const selectedSj = ref<string | undefined>(undefined)
   const reportList = ref<any[]>([])
   const isLoading = ref<boolean>(false)
 

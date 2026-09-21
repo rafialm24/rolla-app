@@ -263,6 +263,7 @@ const {
   rowsPerPage,
   totalPages,
   searchKeyword,
+  selectedItemId,
   fetchComboFinishGood,
   fetchStockOnHand,
   addItemInventoryArea,

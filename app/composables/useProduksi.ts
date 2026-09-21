@@ -2,6 +2,8 @@ export const useProduksi = () => {
   const produksiList = useState<any[]>('produksiList', () => [])
   const currentProduksi = useState<any | null>('currentProduksi', () => null)
   const activeProdId = useCookie<number | null>('active_prod_id', { default: () => null })
+  const activeAppId = useCookie<number>('active_app_id', { default: () => 7 })
+  const activeLocationId = computed(() => activeProdId.value)
   
   const isLoading = ref(false)
   const config = useRuntimeConfig()
@@ -98,6 +100,8 @@ export const useProduksi = () => {
     produksiList,
     currentProduksi,
     activeProdId,
+    activeAppId,
+    activeLocationId,
     isLoading,
     fetchProduksiIndex,
     fetchProduksiTitle,

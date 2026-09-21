@@ -12,3 +12,144 @@
   opacity: 0;
   transform: translateY(-8px) scale(0.97);
 }
+
+/* === Rolla interior theme ==================================================
+   Scoped to the authenticated application so the login page remains isolated. */
+.rolla-dashboard {
+  --rolla-chocolate-950: #170b07;
+  --rolla-chocolate-900: #24130d;
+  --rolla-chocolate-800: #332016;
+  --rolla-chocolate-700: #4d3121;
+  --rolla-gold-500: #c99536;
+  --rolla-gold-400: #dfb65f;
+  --rolla-gold-300: #efd18b;
+  --rolla-cream-50: #fffaf2;
+  --rolla-cream-100: #f8f0e4;
+  --rolla-cream-200: #eadbc7;
+  color: #3b281d;
+  background: var(--rolla-cream-100);
+}
+
+.rolla-dashboard .dashboard-workspace {
+  position: relative;
+  background:
+    radial-gradient(circle at 88% 4%, rgba(214, 169, 81, 0.13), transparent 27rem),
+    linear-gradient(145deg, #fbf7f0 0%, #f3e9dc 100%);
+}
+
+.rolla-dashboard .dashboard-workspace::before {
+  content: '';
+  position: fixed;
+  z-index: 0;
+  right: -8rem;
+  bottom: -10rem;
+  width: 31rem;
+  height: 31rem;
+  border: 1px solid rgba(157, 107, 43, 0.08);
+  border-radius: 50%;
+  box-shadow: 0 0 0 4rem rgba(157, 107, 43, 0.025), 0 0 0 9rem rgba(157, 107, 43, 0.018);
+  pointer-events: none;
+}
+
+/* Warm neutral replacements for existing utility-based modules. */
+.rolla-dashboard [class~="bg-white"] { background-color: #fffdf8 !important; }
+.rolla-dashboard [class~="bg-slate-50"] { background-color: #f9f3ea !important; }
+.rolla-dashboard [class~="bg-slate-100"] { background-color: #f1e6d7 !important; }
+.rolla-dashboard [class~="bg-slate-200"] { background-color: #e7d6c1 !important; }
+.rolla-dashboard [class~="bg-slate-600"] { background-color: #674832 !important; }
+.rolla-dashboard [class~="bg-slate-700"] { background-color: #503322 !important; }
+.rolla-dashboard [class~="bg-slate-800"] {
+  background-color: #332016 !important;
+  background-image: linear-gradient(145deg, #3c271a 0%, #2a1810 100%) !important;
+}
+.rolla-dashboard [class~="bg-slate-900"] { background-color: #24130d !important; }
+.rolla-dashboard [class~="bg-slate-950"] { background-color: #170b07 !important; }
+
+.rolla-dashboard [class~="border-slate-50"],
+.rolla-dashboard [class~="border-slate-100"] { border-color: #eee1d1 !important; }
+.rolla-dashboard [class~="border-slate-200"] { border-color: #decbb4 !important; }
+.rolla-dashboard [class~="border-slate-300"] { border-color: #cdb59b !important; }
+.rolla-dashboard [class~="border-slate-600"] { border-color: #74513a !important; }
+.rolla-dashboard [class~="border-slate-700"] { border-color: rgba(213, 169, 94, 0.22) !important; }
+
+.rolla-dashboard [class~="text-slate-900"] { color: #27160e !important; }
+.rolla-dashboard [class~="text-slate-800"] { color: #382319 !important; }
+.rolla-dashboard [class~="text-slate-700"] { color: #513827 !important; }
+.rolla-dashboard [class~="text-slate-600"] { color: #6c503c !important; }
+.rolla-dashboard [class~="text-slate-500"] { color: #8a6d55 !important; }
+.rolla-dashboard [class~="text-slate-400"] { color: #b89b7c !important; }
+.rolla-dashboard [class~="text-slate-300"] { color: #e7d7c1 !important; }
+.rolla-dashboard [class~="text-slate-200"] { color: #f2e6d5 !important; }
+
+.rolla-dashboard [class~="bg-slate-700"] [class~="text-slate-400"],
+.rolla-dashboard [class~="bg-slate-800"] [class~="text-slate-400"],
+.rolla-dashboard [class~="bg-slate-900"] [class~="text-slate-400"],
+.rolla-dashboard [class~="bg-slate-800"] [class~="text-slate-500"],
+.rolla-dashboard [class~="bg-slate-900"] [class~="text-slate-500"] {
+  color: #c8ae8e !important;
+}
+
+/* Brand gold replaces the former blue/cyan accent. */
+.rolla-dashboard [class~="text-sky-200"] { color: #f6dfa5 !important; }
+.rolla-dashboard [class~="text-sky-300"] { color: #efcf83 !important; }
+.rolla-dashboard [class~="text-sky-400"],
+.rolla-dashboard [class~="text-blue-400"],
+.rolla-dashboard [class~="text-indigo-400"] { color: #dfb65f !important; }
+.rolla-dashboard [class~="text-sky-500"],
+.rolla-dashboard [class~="text-blue-500"],
+.rolla-dashboard [class~="text-indigo-500"] { color: #c99536 !important; }
+.rolla-dashboard [class~="text-sky-600"],
+.rolla-dashboard [class~="text-blue-600"],
+.rolla-dashboard [class~="text-indigo-600"] { color: #a87324 !important; }
+.rolla-dashboard [class~="text-blue-700"],
+.rolla-dashboard [class~="text-indigo-700"] { color: #805219 !important; }
+
+.rolla-dashboard [class~="bg-sky-600"],
+.rolla-dashboard [class~="bg-blue-600"],
+.rolla-dashboard [class~="bg-indigo-600"] {
+  background-color: #a96f27 !important;
+  background-image: linear-gradient(135deg, #d4a44c, #9c6223) !important;
+}
+.rolla-dashboard [class~="bg-sky-500"],
+.rolla-dashboard [class~="bg-blue-500"],
+.rolla-dashboard [class~="bg-indigo-500"] { background-color: #c99536 !important; }
+.rolla-dashboard [class~="bg-sky-500/20"],
+.rolla-dashboard [class~="bg-blue-500/20"],
+.rolla-dashboard [class~="bg-indigo-500/20"] { background-color: rgba(201, 149, 54, 0.16) !important; }
+.rolla-dashboard [class~="bg-sky-500/10"],
+.rolla-dashboard [class~="bg-blue-500/10"],
+.rolla-dashboard [class~="bg-indigo-500/10"] { background-color: rgba(201, 149, 54, 0.1) !important; }
+.rolla-dashboard [class~="border-sky-500"],
+.rolla-dashboard [class~="border-blue-500"],
+.rolla-dashboard [class~="border-indigo-500"] { border-color: #c99536 !important; }
+.rolla-dashboard [class~="border-sky-500/50"],
+.rolla-dashboard [class~="border-blue-500/50"],
+.rolla-dashboard [class~="border-indigo-500/50"] { border-color: rgba(223, 182, 95, 0.55) !important; }
+
+.rolla-dashboard input:focus,
+.rolla-dashboard select:focus,
+.rolla-dashboard textarea:focus {
+  border-color: #c99536 !important;
+  box-shadow: 0 0 0 3px rgba(201, 149, 54, 0.13) !important;
+}
+
+.rolla-dashboard table thead {
+  background-color: rgba(108, 71, 42, 0.08);
+}
+
+.rolla-dashboard table tbody tr {
+  transition: background-color 160ms ease;
+}
+
+.rolla-dashboard table tbody tr:hover {
+  background-color: rgba(201, 149, 54, 0.065) !important;
+}
+
+.rolla-dashboard ::selection {
+  color: #fff8ea;
+  background: #9e6727;
+}
+
+.rolla-dashboard * {
+  scrollbar-color: rgba(156, 105, 49, 0.58) rgba(70, 39, 23, 0.08);
+}

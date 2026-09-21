@@ -286,6 +286,9 @@ export const useDiscountList = () => {
 
   return {
     activeProdId,
+    comboAreaList,
+    comboProdukList,
+    printDataList,
     discountHeaderList,
     discountDetailList,
     undiscountedSjList,

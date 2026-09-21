@@ -108,8 +108,8 @@ onMounted(() => {
   const now = new Date()
   const firstDay = new Date(now.getFullYear(), now.getMonth(), 1)
   
-  startDate.value = firstDay.toISOString().split('T')[0]
-  endDate.value = now.toISOString().split('T')[0]
+  startDate.value = firstDay.toISOString().slice(0, 10)
+  endDate.value = now.toISOString().slice(0, 10)
   
   // Initial fetch
   fetchDetail()
@@ -188,9 +188,9 @@ const chartOptions = computed(() => ({
     type: 'bar',
     toolbar: { show: false },
     background: 'transparent',
-    foreColor: '#94a3b8'
+    foreColor: '#c8ae8e'
   },
-  colors: ['#10b981', '#0ea5e9', '#eab308', '#ef4444'], // Emerald (Belanja), Sky (Omset), Yellow (Profit), Red (Margin)
+  colors: ['#a97938', '#d7a84e', '#f0cf7a', '#c45e49'],
   plotOptions: {
     bar: {
       borderRadius: 4,
@@ -201,8 +201,8 @@ const chartOptions = computed(() => ({
   stroke: { show: true, width: 2, colors: ['transparent'] },
   xaxis: {
     categories: chartCategories.value,
-    axisBorder: { color: '#334155' },
-    axisTicks: { color: '#334155' }
+    axisBorder: { color: '#65432d' },
+    axisTicks: { color: '#65432d' }
   },
   yaxis: {
     labels: {
@@ -214,7 +214,7 @@ const chartOptions = computed(() => ({
     }
   },
   grid: {
-    borderColor: '#334155',
+    borderColor: '#5a3a27',
     strokeDashArray: 4,
   },
   tooltip: {

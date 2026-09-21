@@ -1,5 +1,12 @@
 const FOTO_BASE_URL = 'https://laskarbuah-hrd.s3.ap-southeast-3.amazonaws.com/foto_karyawan/'
 
+export interface AuthUser {
+  nik: string
+  id: number
+  prod_id: number
+  id_aplikasi: number
+}
+
 export const useAuth = () => {
   const config = useRuntimeConfig()
 
@@ -7,13 +14,13 @@ export const useAuth = () => {
   const cookieOptions = {
     maxAge: 60 * 60 * 24 * 7,
     sameSite: 'lax' as const,
-    secure: process.env.NODE_ENV === 'production',
+    secure: !import.meta.dev,
     path: '/'
   }
 
   const accessToken = useCookie('access_token', cookieOptions)
   const refreshToken = useCookie('refresh_token', cookieOptions)
-  const user = useCookie('user_data', cookieOptions)
+  const user = useCookie<AuthUser | null>('user_data', cookieOptions)
   const userProfile = useCookie<any>('user_profile', cookieOptions)
   const userId = useCookie<number | null>('user_id', cookieOptions)
 
@@ -28,7 +35,16 @@ export const useAuth = () => {
       const me: any = await $fetch(`${config.public.apiBase || ''}/auth/me`, {
         headers: { Authorization: `Bearer ${accessToken.value}` }
       })
-      userId.value = me?.user_id || me?.id || me?.data?.user_id || me?.data?.id || 0
+      const resolvedUserId = me?.user_id || me?.id || me?.data?.user_id || me?.data?.id || 0
+      userId.value = resolvedUserId
+      if (user.value) {
+        user.value = {
+          ...user.value,
+          id: Number(resolvedUserId || user.value.id || 0),
+          prod_id: Number(me?.prod_id ?? me?.data?.prod_id ?? user.value.prod_id ?? 0),
+          id_aplikasi: Number(me?.id_aplikasi ?? me?.data?.id_aplikasi ?? user.value.id_aplikasi ?? 7)
+        }
+      }
     } catch (err) {
       console.error('Gagal mengambil /auth/me:', err)
     }
@@ -70,7 +86,13 @@ export const useAuth = () => {
       if (response.access_token) {
         accessToken.value = response.access_token
         refreshToken.value = response.refresh_token
-        user.value = { nik }
+        const authData = response.user ?? response.data?.user ?? response.data ?? response
+        user.value = {
+          nik,
+          id: Number(authData.id ?? authData.user_id ?? 0),
+          prod_id: Number(authData.prod_id ?? authData.v_prod_id ?? 0),
+          id_aplikasi: Number(authData.id_aplikasi ?? authData.aplikasi_id ?? 7)
+        }
         // Fetch profil lengkap setelah login berhasil
         await fetchProfile()
         return { success: true }

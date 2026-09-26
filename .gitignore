@@ -3,3 +3,22 @@ node_modules
 .output
 .env
 dist
+
+# GitHub Runner files
+.runner*
+.credentials*
+.service
+.path
+_diag
+_work
+bin*
+externals*
+*.tar.gz
+*.template
+config.sh
+env.sh
+run.sh
+runsvc.sh
+safe_sleep.sh
+svc.sh
+update.finished

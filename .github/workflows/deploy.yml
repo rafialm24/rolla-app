@@ -1,0 +1,48 @@
+name: Deploy Rolla App
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    name: Build & Deploy on Self-Hosted Runner
+    runs-on: self-hosted
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Sync and Deploy
+        run: |
+          TARGET_DIR="/root/runner-rolla"
+          echo "=== Deploying to $TARGET_DIR ==="
+
+          # Sync repository files to production folder, keeping internal runner files safe
+          rsync -av --delete \
+            --exclude '.git' \
+            --exclude '.runner*' \
+            --exclude '.credentials*' \
+            --exclude '.service' \
+            --exclude '.env' \
+            --exclude '_work' \
+            --exclude '_diag' \
+            --exclude 'bin*' \
+            --exclude 'externals*' \
+            --exclude '*.tar.gz' \
+            --exclude '*.template' \
+            --exclude 'config.sh' \
+            --exclude 'env.sh' \
+            --exclude 'run.sh' \
+            --exclude 'runsvc.sh' \
+            --exclude 'safe_sleep.sh' \
+            --exclude 'svc.sh' \
+            --exclude 'update.finished' \
+            --exclude 'node_modules' \
+            --exclude '.output' \
+            ./ "$TARGET_DIR/"
+
+          cd "$TARGET_DIR"
+          bash script/deploy.sh

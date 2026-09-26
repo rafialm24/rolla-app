@@ -2,6 +2,14 @@
 export default defineNuxtConfig({
   compatibilityDate: '2025-07-15',
   devtools: { enabled: true },
+  app: {
+    head: {
+      title: 'Rolla Bakery',
+      link: [
+        { rel: 'icon', type: 'image/jpeg', href: '/rolla-logo.jpg' }
+      ]
+    }
+  },
   css: ['~/assets/css/main.css'],
   modules: ['@nuxt/ui'],
   devServer: {

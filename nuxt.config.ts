@@ -8,6 +8,11 @@ export default defineNuxtConfig({
     port: 3000,
     host: '0.0.0.0'
   },
+  routeRules: {
+    '/api/**': {
+      proxy: `${process.env.BACKEND_API_URL || 'https://oneemp.ctmial9mevzk.work'}/**`
+    }
+  },
   runtimeConfig: {
     public: {
       apiBase: process.env.NUXT_PUBLIC_API_BASE || '/api'

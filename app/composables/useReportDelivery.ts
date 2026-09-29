@@ -6,10 +6,10 @@ export const useReportDelivery = () => {
   const { user } = useAuth()
 
   const clients = ref<any[]>([])
-  
+
   const deliveryData = ref<any[]>([])
   const deliveryWoData = ref<any[]>([])
-  
+
   const isLoadingDelivery = ref<boolean>(false)
   const isLoadingWo = ref<boolean>(false)
   const isExportingSummary = ref<boolean>(false)
@@ -26,7 +26,7 @@ export const useReportDelivery = () => {
       })
       let data = res?.data || res
       if (typeof data === 'string') {
-        try { data = JSON.parse(data) } catch (e) {}
+        try { data = JSON.parse(data) } catch (e) { }
       }
       if (data && Array.isArray(data)) {
         clients.value = data.map(item => ({
@@ -48,16 +48,17 @@ export const useReportDelivery = () => {
       const res: any = await useApiFetch(`/produksi/report/delivery/1`, {
         method: 'GET',
         params: {
-          v_client: client,
-          v_id_set: idSet,
+          v_client: idSet,
+          v_id_set: client,
           v_start_date: startDate,
           v_end_date: endDate,
-          v_prod_id: user?.value?.prod_id || 1 
+          v_prod_id: user?.value?.prod_id || 1
         }
       })
+      console.log("fetchDelivery response fetched with swapped params")
       let data = res?.data || res
       if (typeof data === 'string') {
-        try { data = JSON.parse(data) } catch (e) {}
+        try { data = JSON.parse(data) } catch (e) { }
       }
       if (data && Array.isArray(data)) {
         deliveryData.value = data
@@ -81,12 +82,12 @@ export const useReportDelivery = () => {
           v_client: client,
           v_start_date: startDate,
           v_end_date: endDate,
-          v_prod_id: user?.value?.prod_id || 1 
+          v_prod_id: user?.value?.prod_id || 1
         }
       })
       let data = res?.data || res
       if (typeof data === 'string') {
-        try { data = JSON.parse(data) } catch (e) {}
+        try { data = JSON.parse(data) } catch (e) { }
       }
       if (data && Array.isArray(data)) {
         deliveryWoData.value = data
@@ -107,11 +108,11 @@ export const useReportDelivery = () => {
       const res: any = await useApiFetch(`/produksi/report/delivery/summary`, {
         method: 'GET',
         params: {
-          v_client: client,
-          v_id_set: idSet,
+          v_client: idSet,
+          v_id_set: client,
           v_start_date: startDate,
           v_end_date: endDate,
-          v_prod_id: user?.value?.prod_id || 1 
+          v_prod_id: user?.value?.prod_id || 1
         }
       })
       const data = res?.data || res
@@ -141,7 +142,7 @@ export const useReportDelivery = () => {
       } else {
         alert("No summary data found for these parameters.")
       }
-    } catch(e) {
+    } catch (e) {
       console.error(e)
     } finally {
       isExportingSummary.value = false

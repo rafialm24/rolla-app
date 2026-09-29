@@ -143,7 +143,7 @@
             <div class="border border-slate-100 rounded-2xl overflow-hidden shadow-sm bg-white flex-1">
               <div class="overflow-x-auto max-h-64 custom-scrollbar">
                 <table class="w-full text-sm text-left">
-                  <thead class="bg-slate-50/80 backdrop-blur-sm border-b border-slate-100 sticky top-0 z-10">
+                  <thead class="bg-slate-50 border-b border-slate-200 sticky top-0 z-10 shadow-sm">
                     <tr>
                       <th class="px-4 py-3 font-bold text-slate-500 uppercase tracking-wider text-[10px]">Nama Karyawan / Shift</th>
                       <th class="px-4 py-3 text-center font-bold text-slate-500 uppercase tracking-wider text-[10px] w-24">Action</th>
@@ -157,7 +157,10 @@
                       <td colspan="2" class="px-4 py-8 text-center text-slate-400"><UIcon name="i-heroicons-information-circle" class="w-6 h-6 mx-auto mb-2 text-slate-300" /><p class="font-semibold text-[10px]">Pilih aktifitas untuk melihat grup.</p></td>
                     </tr>
                     <tr v-else v-for="item in groupAktivitasList" :key="item.id" class="border-b border-slate-50 hover:bg-indigo-50/50 transition-colors group">
-                      <td class="px-4 py-3 font-extrabold text-slate-700">{{ item.nama_shift || item.nama }}</td>
+                      <td class="px-4 py-3 font-extrabold text-slate-700">
+                        {{ item.nama_lengkap || item.nama || '-' }}
+                        <span class="text-xs font-semibold text-slate-500 ml-2">({{ item.nama_shift || '-' }})</span>
+                      </td>
                       <td class="px-4 py-3 text-center">
                         <UButton @click="handleDeleteGroup(item.id)" size="2xs" color="rose" variant="ghost" icon="i-heroicons-trash" />
                       </td>
@@ -191,7 +194,7 @@
               <div class="border border-slate-100 rounded-2xl overflow-hidden shadow-sm bg-white flex-1 flex flex-col min-h-[300px]">
                 <div class="overflow-x-auto custom-scrollbar flex-1 max-h-[400px]">
                   <table class="w-full text-sm text-left">
-                    <thead class="bg-slate-50/80 backdrop-blur-sm border-b border-slate-100 sticky top-0 z-10">
+                    <thead class="bg-slate-50 border-b border-slate-200 sticky top-0 z-10 shadow-sm">
                       <tr>
                         <th class="px-4 py-3 font-bold text-slate-500 uppercase tracking-wider text-[10px] whitespace-nowrap">PO Number</th>
                         <th class="px-4 py-3 font-bold text-slate-500 uppercase tracking-wider text-[10px]">Line</th>
@@ -278,7 +281,7 @@
               </div>
               
               <div v-else class="flex-1 flex flex-col">
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4 bg-white p-4 rounded-xl border border-slate-100 shadow-sm relative z-10">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4 bg-white p-4 rounded-xl border border-slate-100 shadow-sm relative z-50">
                   <div>
                     <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-2">Building</label>
                     <div class="relative">
@@ -299,7 +302,7 @@
                 <div class="border border-slate-200 rounded-xl overflow-hidden bg-white flex-1 min-h-[200px] shadow-sm relative z-10">
                   <div class="overflow-x-auto custom-scrollbar max-h-64">
                     <table class="w-full text-xs text-left">
-                      <thead class="bg-slate-100/80 backdrop-blur-sm border-b border-slate-200 sticky top-0 z-10">
+                      <thead class="bg-slate-100 border-b border-slate-200 sticky top-0 z-10 shadow-sm">
                         <tr>
                           <th class="px-3 py-2 text-center font-bold text-slate-500 uppercase tracking-wider text-[9px] w-16">Option</th>
                           <th class="px-3 py-2 font-bold text-slate-500 uppercase tracking-wider text-[9px]">Building</th>

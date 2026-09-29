@@ -39,7 +39,7 @@
             <div class="border border-slate-100 rounded-2xl overflow-hidden shadow-sm bg-white">
               <div class="max-h-[400px] overflow-y-auto custom-scrollbar">
                 <table class="w-full text-sm">
-                  <thead class="bg-slate-50/80 backdrop-blur-sm sticky top-0 z-10 border-b border-slate-100">
+                  <thead class="bg-slate-50 sticky top-0 z-10 border-b border-slate-200 shadow-sm">
                     <tr>
                       <th class="px-4 py-3 text-left font-bold text-slate-500 uppercase tracking-wider text-[10px]">Action</th>
                       <th class="px-4 py-3 text-left font-bold text-slate-500 uppercase tracking-wider text-[10px]">Kode</th>
@@ -66,7 +66,7 @@
                       <td class="px-4 py-3 font-semibold text-slate-500 text-xs">{{ v.kode_vendor }}</td>
                       <td class="px-4 py-3 font-extrabold text-slate-800">{{ v.name_vendor }}</td>
                       <td class="px-4 py-3 text-slate-500 text-xs truncate max-w-[200px]">{{ v.alamat_vendor }}</td>
-                      <td class="px-4 py-3 text-slate-600 text-xs font-semibold">{{ v.tlp_layanan }}</td>
+                      <td class="px-4 py-3 text-slate-600 text-xs font-semibold">{{ v.tlp }}</td>
                       <td class="px-4 py-3 text-center">
                         <UBadge :color="v.status_vendor === 1 ? 'emerald' : 'rose'" variant="soft" size="sm" class="font-bold">{{ v.status_vendor === 1 ? 'Active' : 'Non Active' }}</UBadge>
                       </td>
@@ -105,7 +105,7 @@
             <div class="border border-slate-100 rounded-2xl overflow-hidden shadow-sm bg-white">
               <div class="max-h-[400px] overflow-y-auto custom-scrollbar">
                 <table class="w-full text-xs whitespace-nowrap">
-                  <thead class="bg-slate-50/80 backdrop-blur-sm sticky top-0 z-10 border-b border-slate-100">
+                  <thead class="bg-slate-50 sticky top-0 z-10 border-b border-slate-200 shadow-sm">
                     <tr>
                       <th class="px-3 py-3 text-center font-bold text-slate-500 uppercase tracking-wider text-[10px]">Detail</th>
                       <th class="px-3 py-3 text-left font-bold text-slate-500 uppercase tracking-wider text-[10px]">Receiving Kode</th>
@@ -247,7 +247,7 @@
             <div class="border border-slate-100 rounded-2xl overflow-hidden shadow-sm bg-white">
               <div class="max-h-[300px] overflow-y-auto custom-scrollbar">
                 <table class="w-full text-sm">
-                  <thead class="bg-slate-50/80 backdrop-blur-sm sticky top-0 z-10 border-b border-slate-100">
+                  <thead class="bg-slate-50 sticky top-0 z-10 border-b border-slate-200 shadow-sm">
                     <tr>
                       <th class="px-4 py-3 text-center font-bold text-slate-500 uppercase tracking-wider text-[10px] w-16">Act</th>
                       <th class="px-4 py-3 text-left font-bold text-slate-500 uppercase tracking-wider text-[10px]">Kode Item</th>
@@ -373,7 +373,7 @@
             <div v-else class="border border-slate-100 rounded-2xl overflow-hidden shadow-sm bg-white">
               <div class="max-h-[420px] overflow-y-auto custom-scrollbar">
                 <table class="w-full text-xs whitespace-nowrap">
-                  <thead class="bg-slate-50/80 backdrop-blur-sm sticky top-0 z-10 border-b border-slate-100">
+                  <thead class="bg-slate-50 sticky top-0 z-10 border-b border-slate-200 shadow-sm">
                     <tr>
                       <th class="px-4 py-3 text-left font-bold text-slate-500 uppercase tracking-wider text-[10px]">#</th>
                       <th class="px-4 py-3 text-left font-bold text-slate-500 uppercase tracking-wider text-[10px]">Kode Product</th>
@@ -397,7 +397,7 @@
                       <td class="px-4 py-2.5 text-right font-black text-indigo-600 bg-indigo-50/40">{{ formatNumber(d.sub_total) }}</td>
                     </tr>
                   </tbody>
-                  <tfoot class="bg-slate-50/80 border-t border-slate-200 sticky bottom-0">
+                  <tfoot class="bg-slate-50 border-t border-slate-200 sticky bottom-0 z-10 shadow-sm">
                     <tr>
                       <td colspan="5" class="px-4 py-2.5 text-right text-[10px] font-black text-slate-500 uppercase tracking-widest">Grand Total</td>
                       <td class="px-4 py-2.5 text-right font-black text-slate-700">{{ formatNumber(receivingDetailList.reduce((s, d) => s + Number(d.qty || 0), 0)) }}</td>

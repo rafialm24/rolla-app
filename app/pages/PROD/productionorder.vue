@@ -54,7 +54,7 @@
             <div class="border border-slate-100 rounded-2xl overflow-hidden shadow-sm bg-white">
               <div class="overflow-x-auto max-h-[500px] custom-scrollbar">
                 <table class="w-full text-xs text-left min-w-[1800px]">
-                  <thead class="bg-slate-50/80 backdrop-blur-sm border-b border-slate-100 sticky top-0 z-20">
+                  <thead class="bg-slate-50 border-b border-slate-200 sticky top-0 z-20 shadow-sm">
                     <tr>
                       <th class="px-3 py-3 font-bold text-slate-500 uppercase tracking-wider text-[9px] text-center w-24">Option</th>
                       <th class="px-3 py-3 font-bold text-slate-500 uppercase tracking-wider text-[9px]">ARTIKEL</th>
@@ -161,7 +161,7 @@
             <div class="border border-slate-100 rounded-2xl overflow-hidden shadow-sm bg-white">
               <div class="overflow-x-auto max-h-[400px] custom-scrollbar">
                 <table class="w-full text-xs text-left">
-                  <thead class="bg-slate-50/80 backdrop-blur-sm border-b border-slate-100 sticky top-0 z-10">
+                  <thead class="bg-slate-50 border-b border-slate-200 sticky top-0 z-10 shadow-sm">
                     <tr>
                       <th class="px-4 py-3 font-bold text-slate-500 uppercase tracking-wider text-[10px]">FORMULA</th>
                       <th class="px-4 py-3 font-bold text-slate-500 uppercase tracking-wider text-[10px]">KODE PRODUK</th>

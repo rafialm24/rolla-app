@@ -207,6 +207,7 @@ export const useRealTimeOrder = () => {
       q.append('v_id_store', storeId.toString())
 
       const res: any = await $fetch(`${config.public.apiBase || ''}/produksi/real-time-order-produksi/posting-print-sj-produksi?${q.toString()}`, {
+        method: 'POST',
         headers: { Authorization: `Bearer ${accessToken.value}` }
       })
       return { success: true, data: res.data }

@@ -43,7 +43,7 @@
             <div class="border border-slate-100 rounded-2xl overflow-hidden shadow-sm bg-white flex-1 min-h-[300px] flex flex-col">
               <div class="overflow-auto custom-scrollbar flex-1">
                 <table class="w-full text-sm text-left relative">
-                  <thead class="bg-slate-50/95 backdrop-blur-md border-b border-slate-100 sticky top-0 z-20">
+                  <thead class="bg-slate-50 border-b border-slate-200 sticky top-0 z-20 shadow-sm">
                     <tr>
                       <th class="px-4 py-3 font-bold text-slate-500 uppercase tracking-wider text-[10px] whitespace-nowrap">PO Number</th>
                       <th class="px-4 py-3 font-bold text-slate-500 uppercase tracking-wider text-[10px]">BOM</th>
@@ -135,7 +135,7 @@
             <div v-else class="border border-slate-100 rounded-2xl overflow-hidden shadow-sm bg-white flex-1 min-h-[300px] flex flex-col">
               <div class="overflow-auto custom-scrollbar flex-1">
                 <table class="w-full text-sm text-left relative">
-                  <thead class="bg-slate-50/95 backdrop-blur-md border-b border-slate-100 sticky top-0 z-20">
+                  <thead class="bg-slate-50 border-b border-slate-200 sticky top-0 z-20 shadow-sm">
                     <tr>
                       <th class="px-4 py-3 font-bold text-slate-500 uppercase tracking-wider text-[10px]">Kode Produk</th>
                       <th class="px-4 py-3 font-bold text-slate-500 uppercase tracking-wider text-[10px]">Component Name</th>

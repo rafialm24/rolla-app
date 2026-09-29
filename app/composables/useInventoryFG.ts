@@ -60,7 +60,7 @@ export const useInventoryFG = (idClass: number = 1) => {
         `${config.public.apiBase || ''}/produksi/prod-stock-on-hand`,
         {
           query: {
-            var_where: searchKeyword.value || '',
+            var_where: searchKeyword.value ? `AND cmp.name_produk ILIKE '%${searchKeyword.value}%'` : '',
             v_id_item: selectedItemId.value || 0,
             var_page_number: currentPage.value,
             var_row_page: rowsPerPage.value,

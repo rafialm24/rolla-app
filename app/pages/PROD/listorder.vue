@@ -434,36 +434,167 @@ const handlePrint = async () => {
     alert("Silakan pilih Surat Jalan terlebih dahulu")
     return
   }
-  
+
   const res = await printSuratJalan(storeId, selectedSjNum.value)
-  if (res && res.success && res.data && res.data.length > 0) {
-    const data = res.data;
-    
-    // Dynamically define properties based on JSON keys
-    const keys = Object.keys(data[0]);
-    const properties = keys.map(k => {
-      return { 
-        field: k, 
-        displayName: k.replace(/_/g, ' ').toUpperCase() 
-      };
-    });
+  if (res && res.success && res.data) {
+    const rawData = res.data
+    const data = Array.isArray(rawData) ? rawData : (rawData.data || [rawData])
+
+    if (data.length === 0) {
+      alert("Data Surat Jalan kosong.")
+      return
+    }
+
+    const firstItem = data[0] || {}
+    const companyName = firstItem.cmp_desc || 'PT ROTI ROLLA BOJONEGORO'
+    const prodDesc = firstItem.kode_prod ? `${firstItem.kode_prod} - ${firstItem.name_prod || ''}` : (firstItem.name_prod || 'ROLLA BOJONEGORO')
+    const address = firstItem.alamat_prod || 'Jl. Raya bojonegoro cepu, pertigaan mayangrejo no.1, ds. Mayangrejo, kec. Kalitidu kab. Bojonegoro'
+    const area = firstItem.area_desc || 'BOJONEGORO'
+    const deliveryDate = firstItem.delivery_date || firstItem.tgl_delivery || ''
+    const storeInfo = firstItem.name_store ? `${firstItem.kode_store || ''} - ${firstItem.name_store}` : (firstItem.kode_store ? `${firstItem.kode_store} - ${nameStore}` : nameStore)
+    const sjNo = selectedSjNum.value || firstItem.v_sj_num || firstItem.sj_num || ''
+
+    const totalItemsCount = data.length
+    const grandTotal = data.reduce((acc: number, item: any) => {
+      const sub = item.sub_total !== undefined ? Number(item.sub_total) : (item.total !== undefined ? Number(item.total) : 0)
+      return acc + (isNaN(sub) ? 0 : sub)
+    }, 0)
+
+    const logoUrl = new URL('/rolla-logo.jpg', window.location.origin).href
+    const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?data=${encodeURIComponent(sjNo)}&size=100x100`
+
+    const tableRowsHtml = data.map((item: any, idx: number) => {
+      const kode = item.kode_produk || item.kode_prod || item.kode || '-'
+      const name = item.name_produk || item.nama_produk || item.name || '-'
+      const cate = item.name_prod_cate || item.kategori || item.category || '-'
+      const uom = item.name_prod_uom || item.satuan || item.uom || '-'
+      const qty = item.qty !== undefined ? item.qty : (item.qty_loading || 0)
+      const dis = item.discount !== undefined ? item.discount : (item.dis || 0)
+      const price = item.price !== undefined ? item.price : (item.harga || 0)
+      const subTotal = item.sub_total !== undefined ? item.sub_total : (item.total !== undefined ? item.total : 0)
+
+      return `
+        <tr>
+          <td style="text-align: center;">${idx + 1}</td>
+          <td style="text-align: left;">${kode}</td>
+          <td style="text-align: left;">${name}</td>
+          <td style="text-align: left;">${cate}</td>
+          <td style="text-align: left;">${uom}</td>
+          <td style="text-align: right;">${qty}</td>
+          <td style="text-align: right;">${dis}</td>
+          <td style="text-align: right;">${price}</td>
+          <td style="text-align: right;">${subTotal}</td>
+        </tr>
+      `
+    }).join('')
+
+    const printHtml = `
+      <div class="sj-print">
+        <div class="header-row">
+          <div class="header-left">
+            <img src="${logoUrl}" alt="Rolla Logo" class="logo-img" />
+            <div class="company-info">
+              <div class="cmp-name">${companyName}</div>
+              <div class="cmp-prod">${prodDesc}</div>
+              <div class="cmp-address">${address}</div>
+              <div class="doc-title">SURAT JALAN</div>
+            </div>
+          </div>
+          <div class="header-right">
+            <table class="meta-table">
+              <tr><td class="meta-label">Area</td><td>:${area}</td></tr>
+              <tr><td class="meta-label">Tanggal</td><td>:${deliveryDate}</td></tr>
+              <tr><td class="meta-label">Toko</td><td>:${storeInfo}</td></tr>
+              <tr><td class="meta-label">No</td><td>:${sjNo}</td></tr>
+            </table>
+            <img src="${qrUrl}" alt="QR" class="qr-img" />
+          </div>
+        </div>
+
+        <div class="signatures">
+          <div class="sig-box">
+            <span>Admin Produksi</span>
+            <span>Admin</span>
+          </div>
+          <div class="sig-box">
+            <span>Driver</span>
+            <span>----------</span>
+          </div>
+          <div class="sig-box">
+            <span>Penerima</span>
+            <span>----------</span>
+          </div>
+        </div>
+
+        <div class="summary-bar">
+          <div>Keterangan</div>
+          <div class="sum-right">
+            <span>Jumlah Item : ${totalItemsCount}</span>
+            <span>Total Akhir : ${grandTotal}</span>
+          </div>
+        </div>
+
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th class="center" style="width: 30px;">No</th>
+              <th>KODE</th>
+              <th>ITEM</th>
+              <th>KATEGORY</th>
+              <th>SATUAN</th>
+              <th class="right">QTY</th>
+              <th class="right">DIS</th>
+              <th class="right">PRICE</th>
+              <th class="right">SUB TOTAL</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${tableRowsHtml}
+          </tbody>
+        </table>
+      </div>
+    `
 
     import('print-js').then((module) => {
-      const printJS = module.default;
+      const printJS = module.default
       printJS({
-        printable: data,
-        properties: properties,
-        type: 'json',
-        header: `<h3 style="text-align: center; font-family: sans-serif; margin-bottom: 5px;">SURAT JALAN: ${selectedSjNum.value}</h3><p style="text-align: center; font-family: sans-serif; margin-top: 0;">Store: ${nameStore}</p>`,
-        gridHeaderStyle: 'color: black; border: 1px solid #ccc; padding: 6px; font-weight: bold; font-family: sans-serif; font-size: 11px; background: #f8fafc;',
-        gridStyle: 'border: 1px solid #ccc; padding: 6px; font-family: sans-serif; font-size: 10px; text-align: left;',
-      });
+        printable: printHtml,
+        type: 'raw-html',
+        documentTitle: `Surat Jalan ${sjNo}`,
+        style: `
+          @page { size: A4 landscape; margin: 10mm; }
+          body { font-family: Arial, Helvetica, sans-serif; font-size: 11px; color: #000; background: #fff; margin: 0; padding: 0; }
+          .sj-print { width: 100%; box-sizing: border-box; }
+          .header-row { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 25px; }
+          .header-left { display: flex; gap: 15px; }
+          .logo-img { width: 80px; height: auto; object-fit: contain; }
+          .company-info { display: flex; flex-direction: column; gap: 3px; }
+          .cmp-name { font-weight: bold; font-size: 12px; }
+          .cmp-prod { font-weight: bold; font-size: 11px; }
+          .cmp-address { font-size: 10px; max-width: 450px; line-height: 1.3; }
+          .doc-title { font-weight: bold; font-size: 13px; margin-top: 8px; }
+          .header-right { display: flex; gap: 15px; align-items: flex-start; }
+          .meta-table { border-collapse: collapse; font-size: 10px; font-weight: bold; margin-top: 2px; }
+          .meta-table td { padding: 2px 4px; vertical-align: top; }
+          .meta-label { text-align: left; }
+          .qr-img { width: 75px; height: 75px; object-fit: contain; }
+          .signatures { display: flex; justify-content: space-around; margin-bottom: 25px; font-size: 11px; font-weight: bold; text-align: center; }
+          .sig-box { display: flex; flex-direction: column; justify-content: space-between; height: 65px; width: 150px; }
+          .summary-bar { display: flex; justify-content: space-between; align-items: flex-end; font-size: 11px; font-weight: bold; margin-bottom: 5px; }
+          .sum-right { display: flex; gap: 30px; }
+          .data-table { width: 100%; border-collapse: collapse; border: 1.5px solid #000; font-size: 10px; }
+          .data-table th, .data-table td { border: 1px solid #000; padding: 6px; }
+          .data-table th { font-weight: bold; text-transform: uppercase; text-align: left; }
+          .data-table th.center { text-align: center; }
+          .data-table th.right { text-align: right; }
+        `
+      })
     }).catch(err => {
-      console.error("Error loading print-js", err);
-      alert("Gagal memuat modul print");
-    });
+      console.error("Error loading print-js", err)
+      alert("Gagal memuat modul print")
+    })
   } else {
-    alert("Data Surat Jalan kosong atau gagal diambil dari server.");
+    alert("Data Surat Jalan kosong atau gagal diambil dari server.")
   }
 }
 </script>

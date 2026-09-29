@@ -202,7 +202,7 @@ watch(activeProdId, async () => {
         <!-- Data Table -->
         <div v-else class="overflow-auto custom-scrollbar" style="max-height: calc(100vh - 400px)">
           <table class="w-full text-xs whitespace-nowrap">
-            <thead class="bg-slate-50/90 backdrop-blur-sm sticky top-0 z-10 border-b border-slate-200 shadow-sm">
+            <thead class="bg-slate-50 sticky top-0 z-10 border-b border-slate-200 shadow-sm">
               <tr>
                 <th class="px-4 py-3 text-left font-bold text-slate-500 uppercase tracking-wider text-[10px]">#</th>
                 <th class="px-4 py-3 text-left font-bold text-slate-500 uppercase tracking-wider text-[10px]">SJ NUMBER</th>

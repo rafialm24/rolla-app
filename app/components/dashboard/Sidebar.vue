@@ -103,7 +103,7 @@
           <div class="w-11 py-2.5 flex justify-center flex-shrink-0 cursor-pointer text-slate-500" @click="isHovered = true">
             <UIcon name="i-heroicons-magnifying-glass" class="w-4 h-4" />
           </div>
-          <input
+          <input v-model="searchMenu"
             type="text"
             placeholder="Quick search..."
             :class="['bg-transparent text-slate-200 text-[11px] font-bold tracking-wide py-2.5 pr-3 focus:outline-none placeholder-slate-600 transition-opacity duration-300', isHovered || isOpen ? 'opacity-100 w-full' : 'opacity-0 w-0']"
@@ -118,16 +118,16 @@
             <!-- Level 1: Root Menu Item -->
             <div class="group/nav relative">
               <!-- Active Highlight Decorator -->
-              <div v-if="expandedSubMenus.includes(menu.id_menu) || (isRouteActive(menu.mn_pth) && !menu.submenu?.length)" class="absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b from-amber-300 to-amber-600 rounded-r-full shadow-[0_0_12px_rgba(217,164,65,0.65)] z-10"></div>
+              <div v-if="expandedSubMenus.includes(menu.id_menu) || (isRouteActive(menu.mn_pth) && !menu.submenu?.length) || searchMenu" class="absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b from-amber-300 to-amber-600 rounded-r-full shadow-[0_0_12px_rgba(217,164,65,0.65)] z-10"></div>
               
               <!-- Case A: Has Submenus (Toggle Button) -->
               <button
                 v-if="menu.submenu && menu.submenu.length"
                 @click="toggleSubMenu(menu.id_menu)"
                 class="w-full flex items-center text-[12px] font-black uppercase tracking-wider transition-all rounded-xl relative z-10 py-2 px-1 hover:bg-white/5"
-                :class="[expandedSubMenus.includes(menu.id_menu) ? 'text-white bg-white/5' : 'text-slate-400']"
+                :class="[(expandedSubMenus.includes(menu.id_menu) || searchMenu) ? 'text-white bg-white/5' : 'text-slate-400']"
               >
-                <div class="w-10 py-1 flex justify-center flex-shrink-0 transition-colors" :class="expandedSubMenus.includes(menu.id_menu) ? 'text-amber-400' : 'text-stone-500 group-hover/nav:text-amber-200'" v-html="getProfessionalIcon(menu.mn_nm)"></div>
+                <div class="w-10 py-1 flex justify-center flex-shrink-0 transition-colors" :class="(expandedSubMenus.includes(menu.id_menu) || searchMenu) ? 'text-amber-400' : 'text-stone-500 group-hover/nav:text-amber-200'" v-html="getProfessionalIcon(menu.mn_nm)"></div>
                 <div :class="['flex flex-1 items-center justify-between pr-3 transition-opacity duration-300', isHovered || isOpen ? 'opacity-100 w-auto' : 'opacity-0 w-0 overflow-hidden']">
                   <span class="truncate">{{ menu.mn_nm }}</span>
                   <UIcon name="i-heroicons-chevron-right" 
@@ -151,7 +151,7 @@
             <!-- Level 2: Submenus -->
             <div 
               v-show="isHovered || isOpen"
-              v-if="expandedSubMenus.includes(menu.id_menu)" 
+              v-if="expandedSubMenus.includes(menu.id_menu) || searchMenu" 
               class="pl-4 ml-6 border-l border-white/10 space-y-1 relative mt-1 mb-2"
             >
               <NuxtLink
@@ -200,6 +200,7 @@ const { produksiList, currentProduksi, activeProdId, fetchProduksiIndex, setActi
 const isDropdownOpen = ref(false)
 const dropdownRef = ref<HTMLElement | null>(null)
 const isHovered = ref(false)
+const searchMenu = ref('')
 
 const activeProdName = computed(() => {
   if (!activeProdId.value || !produksiList.value) return 'PILIH LOKASI'
@@ -238,23 +239,31 @@ const displayNavigation = computed(() => {
   // Clone to avoid mutating original state
   const navCopy = JSON.parse(JSON.stringify(navigation.value))
   const availablePaths = router.getRoutes().map(r => r.path.replace(/\/$/, ''))
+  const searchLower = searchMenu.value.toLowerCase().trim()
   
   const filterMenus = (menus: any[]) => {
     if (!menus) return []
     return menus.filter(menu => {
+      const matchName = menu.mn_nm?.toLowerCase().includes(searchLower)
       if (menu.submenu && menu.submenu.length > 0) {
         menu.submenu = filterMenus(menu.submenu)
-        return menu.submenu.length > 0
+        const hasSubMatch = menu.submenu.length > 0
+        if (searchLower && !matchName && !hasSubMatch) return false
+        return true
       }
       
       if (!menu.mn_pth || menu.mn_pth === '-') return false
       const formattedPath = formatPath(menu.mn_pth).replace(/\/$/, '')
       
-      return availablePaths.includes(formattedPath)
+      if (!availablePaths.includes(formattedPath)) return false
+      if (searchLower && !matchName) return false
+      return true
     })
   }
 
-  return [dashboardMenu, ...filterMenus(navCopy)]
+  const filteredNav = filterMenus(navCopy)
+  const showDashboard = !searchLower || dashboardMenu.mn_nm.toLowerCase().includes(searchLower)
+  return showDashboard ? [dashboardMenu, ...filteredNav] : filteredNav
 })
 
 const selectedMenuId = ref<number | null>(999999)

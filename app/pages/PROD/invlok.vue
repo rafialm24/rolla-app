@@ -66,6 +66,7 @@
                     <th class="px-4 py-3 font-bold text-slate-500 uppercase tracking-wider text-[9px] text-right">QTY BIG</th>
                     <th class="px-4 py-3 font-bold text-slate-500 uppercase tracking-wider text-[9px] text-right">QTY LIT</th>
                     <th class="px-4 py-3 font-bold text-slate-500 uppercase tracking-wider text-[9px] text-right">Batch</th>
+                    <th class="px-4 py-3 font-bold text-slate-500 uppercase tracking-wider text-[9px]">UOM BOM</th>
                     <th class="px-4 py-3 font-bold text-slate-500 uppercase tracking-wider text-[9px]">Lokasi</th>
                     <th class="px-4 py-3 font-bold text-slate-500 uppercase tracking-wider text-[9px] text-right">UPDATE DATE</th>
                     <th class="px-4 py-3 font-bold text-slate-500 uppercase tracking-wider text-[9px] whitespace-nowrap">UPDATE BY</th>
@@ -85,19 +86,19 @@
                         :ui="{ rounded: 'rounded-md' }"
                       />
                     </td>
-                    <td class="px-2 py-1.5" colspan="8" />
+                    <td class="px-2 py-1.5" colspan="9" />
                   </tr>
                 </thead>
 
                 <tbody class="divide-y divide-slate-50">
                   <tr v-if="isLoadingStock">
-                    <td colspan="12" class="px-4 py-12 text-center text-slate-400">
+                    <td colspan="13" class="px-4 py-12 text-center text-slate-400">
                       <UIcon name="i-heroicons-arrow-path" class="w-8 h-8 animate-spin mx-auto mb-2 text-purple-500" />
                       <p class="font-semibold text-[10px]">Memuat data...</p>
                     </td>
                   </tr>
                   <tr v-else-if="stockList.length === 0">
-                    <td colspan="12" class="px-4 py-12 text-center text-slate-400">
+                    <td colspan="13" class="px-4 py-12 text-center text-slate-400">
                       <UIcon name="i-heroicons-inbox" class="w-8 h-8 mx-auto mb-2 text-slate-300" />
                       <p class="font-semibold text-[10px]">Belum ada data</p>
                     </td>
@@ -144,6 +145,9 @@
                       <span class="text-sm font-black text-slate-800">
                         {{ formatNumber(row.qty_batch ?? 0) }}
                       </span>
+                    </td>
+                    <td class="px-4 py-3 font-bold text-slate-500 text-[10px]">
+                      {{ row.uom_bom || '-' }}
                     </td>
                     <td class="px-4 py-3">
                       <USelect

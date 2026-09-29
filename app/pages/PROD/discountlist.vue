@@ -42,7 +42,7 @@
             <div class="border border-slate-100 rounded-2xl overflow-hidden shadow-sm bg-white flex-1">
               <div class="overflow-x-auto max-h-[400px] custom-scrollbar">
                 <table class="w-full text-xs">
-                  <thead class="bg-slate-50/80 backdrop-blur-sm border-b border-slate-100 sticky top-0 z-10">
+                  <thead class="bg-slate-50 border-b border-slate-200 sticky top-0 z-10 shadow-sm">
                     <tr>
                       <th class="px-3 py-3 text-center font-bold text-slate-500 uppercase tracking-wider text-[9px] w-24 whitespace-nowrap">Action</th>
                       <th class="px-3 py-3 text-left font-bold text-slate-500 uppercase tracking-wider text-[9px] whitespace-nowrap">Sj Number</th>
@@ -111,7 +111,7 @@
             <div class="border border-slate-100 rounded-2xl overflow-hidden shadow-sm bg-white flex-1">
               <div class="overflow-x-auto max-h-[400px] custom-scrollbar">
                 <table class="w-full text-xs">
-                  <thead class="bg-slate-50/80 backdrop-blur-sm border-b border-slate-100 sticky top-0 z-10">
+                  <thead class="bg-slate-50 border-b border-slate-200 sticky top-0 z-10 shadow-sm">
                     <tr>
                       <th class="px-3 py-3 text-center font-bold text-slate-500 uppercase tracking-wider text-[9px] w-20">Action</th>
                       <th class="px-3 py-3 text-left font-bold text-slate-500 uppercase tracking-wider text-[9px] whitespace-nowrap">Kode Produk</th>
@@ -199,7 +199,7 @@
           <div class="border border-slate-100 rounded-2xl overflow-hidden shadow-sm bg-white">
             <div class="overflow-x-auto max-h-[300px] custom-scrollbar">
               <table class="w-full text-sm">
-                <thead class="bg-slate-50/80 backdrop-blur-sm border-b border-slate-100 sticky top-0">
+                <thead class="bg-slate-50 border-b border-slate-200 sticky top-0 z-10 shadow-sm">
                   <tr>
                     <th class="px-4 py-3 text-left font-bold text-slate-500 uppercase tracking-wider text-[10px] w-1/4">Nomor SJ</th>
                     <th class="px-4 py-3 text-left font-bold text-slate-500 uppercase tracking-wider text-[10px] w-1/3">Nama Toko</th>

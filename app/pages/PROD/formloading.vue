@@ -27,11 +27,35 @@
         <div class="p-6">
           <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
             <div>
-              <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-2">Kategori</label>
+              <div class="flex items-center justify-between mb-2">
+                <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-widest">Kategori</label>
+                <UButton 
+                  v-if="kategoriOptions.length > 0"
+                  size="2xs" 
+                  variant="ghost" 
+                  color="blue" 
+                  @click="filterKategori.length === kategoriOptions.length ? filterKategori = [] : filterKategori = kategoriOptions.map(k => k.id)" 
+                  class="text-[9px] font-bold py-0 h-4"
+                >
+                  {{ filterKategori.length === kategoriOptions.length ? 'Batal Semua' : 'Pilih Semua' }}
+                </UButton>
+              </div>
               <USelectMenu v-model="filterKategori" :options="kategoriOptions" multiple placeholder="-- Select Kategori --" value-attribute="id" option-attribute="name_prod_cate" :ui="{ rounded: 'rounded-xl' }" />
             </div>
             <div>
-              <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-2">Store</label>
+              <div class="flex items-center justify-between mb-2">
+                <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-widest">Store</label>
+                <UButton 
+                  v-if="storeOptions.length > 0"
+                  size="2xs" 
+                  variant="ghost" 
+                  color="blue" 
+                  @click="filterStore.length === storeOptions.length ? filterStore = [] : filterStore = storeOptions.map(s => s.id)" 
+                  class="text-[9px] font-bold py-0 h-4"
+                >
+                  {{ filterStore.length === storeOptions.length ? 'Batal Semua' : 'Pilih Semua' }}
+                </UButton>
+              </div>
               <USelectMenu v-model="filterStore" :options="storeOptions" multiple placeholder="-- Select Store --" value-attribute="id" option-attribute="display_name" searchable searchable-placeholder="Search Store..." :ui="{ rounded: 'rounded-xl' }" />
             </div>
             <div>

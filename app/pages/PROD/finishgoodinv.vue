@@ -30,19 +30,7 @@
 
         <div class="p-6">
           <!-- Filter Row -->
-          <div class="flex flex-col sm:flex-row sm:items-center gap-4 mb-6 bg-slate-50/50 p-4 rounded-2xl border border-slate-100 shadow-inner">
-            <div class="flex-1 w-full max-w-sm">
-              <label class="text-[9px] font-bold text-slate-500 uppercase tracking-widest block mb-1">Item Filter:</label>
-              <USelect
-                v-model="selectedItemId"
-                @change="handleSelectItem"
-                :disabled="isLoadingCombo"
-                :options="[{label:'-- Semua Item --', value:null}, ...itemComboList.map(i => ({label: i.name_produk, value: i.id}))]"
-                size="md"
-                :ui="{ rounded: 'rounded-xl', base: 'font-semibold' }"
-              />
-            </div>
-            
+          <div class="flex flex-col sm:flex-row sm:items-center gap-4 mb-6 bg-slate-50/50 p-4 rounded-2xl border border-slate-100 shadow-inner">            
             <div class="sm:ml-auto mt-2 sm:mt-0 flex gap-2">
               <UButton
                 @click="openAddItemModal"

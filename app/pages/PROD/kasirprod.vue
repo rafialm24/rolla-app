@@ -107,7 +107,7 @@
                   wrapper: 'relative',
                   base: 'min-w-full table-fixed',
                   td: { padding: 'py-2.5 px-3', font: 'text-[13px] font-medium text-slate-700' },
-                  th: { padding: 'py-3 px-3', font: 'text-xs font-bold uppercase tracking-wider text-slate-500 bg-slate-50/95 sticky top-0 z-10 backdrop-blur-sm border-b border-slate-200' }
+                  th: { padding: 'py-3 px-3', font: 'text-xs font-bold uppercase tracking-wider text-slate-500 bg-slate-50 sticky top-0 z-10 border-b border-slate-200' }
                 }"
               >
                 <!-- Loading State -->

@@ -131,7 +131,7 @@ const fetchPareto = async () => {
   paretoDetailData.value = []
   
   try {
-    const res: any = await $fetch(`${config.public.apiBase || ''}/produksi/report-produksi/pareto`, {
+    const res: any = await $fetch(`${config.public.apiBase || ''}/produksi/dhasbord/get-pareto-produksi`, {
       headers: { 'Authorization': `Bearer ${accessToken.value}` },
       params: {
         v_prod_id: props.prodId,
@@ -156,7 +156,7 @@ const selectProduct = async (id: number) => {
   pendingDetail.value = true
   
   try {
-    const res: any = await $fetch(`${config.public.apiBase || ''}/produksi/report-produksi/pareto-detail`, {
+    const res: any = await $fetch(`${config.public.apiBase || ''}/produksi/dhasbord/get-pareto-produksi-detail`, {
       headers: { 'Authorization': `Bearer ${accessToken.value}` },
       params: {
         v_prod_id: props.prodId,

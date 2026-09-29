@@ -127,7 +127,7 @@ const fetchDetail = async () => {
   error.value = ''
   
   try {
-    const res: any = await $fetch(`${config.public.apiBase || ''}/produksi/report-produksi/chart-income-detail`, {
+    const res: any = await $fetch(`${config.public.apiBase || ''}/produksi/dhasbord/get-dhas-chart-prod-detail`, {
       headers: { 'Authorization': `Bearer ${accessToken.value}` },
       params: {
         v_prod_id: props.prodId,

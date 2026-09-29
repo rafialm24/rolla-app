@@ -224,7 +224,7 @@ const fetchStore = async () => {
   if (!storeStartDate.value || !storeEndDate.value) return
   pendingStore.value = true; selectedStoreId.value = null; storeDetailData.value = []
   try {
-    const res: any = await $fetch(`${config.public.apiBase || ''}/produksi/report-produksi/return-max`, {
+    const res: any = await $fetch(`${config.public.apiBase || ''}/produksi/dhasbord/get-return-produksi-item`, {
       headers: { 'Authorization': `Bearer ${accessToken.value}` },
       params: { v_prod_id: props.prodId, v_start_date: storeStartDate.value, v_end_date: storeEndDate.value }
     })
@@ -239,7 +239,7 @@ const fetchStore = async () => {
 const selectStore = async (id: number) => {
   selectedStoreId.value = id; pendingStoreDetail.value = true
   try {
-    const res: any = await $fetch(`${config.public.apiBase || ''}/produksi/report-produksi/penjualan-detail`, {
+    const res: any = await $fetch(`${config.public.apiBase || ''}/produksi/dhasbord/get-return-produksi-detail-item`, {
       headers: { 'Authorization': `Bearer ${accessToken.value}` },
       params: { v_prod_id: props.prodId, v_start_date: storeStartDate.value, v_end_date: storeEndDate.value, v_store: id }
     })

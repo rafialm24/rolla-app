@@ -61,12 +61,12 @@ const fetchData = async () => {
   pendingWeekly.value = true
   pendingMonthly.value = true
   try {
-    const pWeekly = $fetch(`${config.public.apiBase || ''}/produksi/report-produksi/chart-income`, {
+    const pWeekly = $fetch(`${config.public.apiBase || ''}/produksi/dhasbord/get-dc-dhas-chart-prod`, {
       headers: { 'Authorization': `Bearer ${accessToken.value}` },
       params: { v_prod_id: props.prodId }
     })
     
-    const pMonthly = $fetch(`${config.public.apiBase || ''}/produksi/report-produksi/chart-income-year`, {
+    const pMonthly = $fetch(`${config.public.apiBase || ''}/produksi/dhasbord/get-dc-dhas-chart-prod-year`, {
       headers: { 'Authorization': `Bearer ${accessToken.value}` },
       params: { v_prod_id: props.prodId }
     })

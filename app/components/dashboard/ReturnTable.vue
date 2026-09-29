@@ -133,7 +133,7 @@ const fetchReturn = async () => {
   detailData.value = []
   
   try {
-    const res: any = await $fetch(`${config.public.apiBase || ''}/produksi/report-produksi/return-store`, {
+    const res: any = await $fetch(`${config.public.apiBase || ''}/produksi/dhasbord/get-return-produksi-store`, {
       headers: { 'Authorization': `Bearer ${accessToken.value}` },
       params: {
         v_prod_id: props.prodId,
@@ -157,7 +157,7 @@ const selectStore = async (id: number) => {
   pendingDetail.value = true
   
   try {
-    const res: any = await $fetch(`${config.public.apiBase || ''}/produksi/report-produksi/return-detail-store`, {
+    const res: any = await $fetch(`${config.public.apiBase || ''}/produksi/dhasbord/get-return-produksi-detail-store`, {
       headers: { 'Authorization': `Bearer ${accessToken.value}` },
       params: {
         v_prod_id: props.prodId,

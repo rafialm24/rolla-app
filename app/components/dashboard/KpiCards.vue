@@ -133,7 +133,7 @@ const pending = ref(false)
 const fetchData = async () => {
   pending.value = true
   try {
-    const res: any = await $fetch(`${config.public.apiBase || ''}/produksi/report-produksi/chart-income`, {
+    const res: any = await $fetch(`${config.public.apiBase || ''}/produksi/dhasbord/get-dc-dhas-chart-prod`, {
       headers: {
         'Authorization': `Bearer ${accessToken.value}`
       },

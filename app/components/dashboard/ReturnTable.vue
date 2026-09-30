@@ -84,7 +84,7 @@
                 <div class="font-medium">{{ item.name_produk }}</div>
                 <div class="text-xs text-slate-500 font-mono">{{ item.kode_produk }}</div>
               </td>
-              <td class="px-4 py-2">{{ item.name_prod_uom }}</td>
+              <td class="px-4 py-2">{{ item.uom }}</td>
               <td class="px-4 py-2 text-right">{{ formatNumber(item.qty) }}</td>
               <td class="px-4 py-2 text-right text-rose-300">{{ formatNumber(item.total) }}</td>
               <td class="px-4 py-2 text-center text-xs text-slate-400">{{ formatDate(item.tgl) }}</td>

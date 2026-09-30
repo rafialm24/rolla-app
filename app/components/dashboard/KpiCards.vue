@@ -18,16 +18,16 @@
             <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">Total Sales</span>
             <span class="bg-sky-500/20 text-sky-400 text-[10px] font-bold px-2 py-0.5 rounded">Hari Ini</span>
           </div>
-          <h3 class="text-2xl font-bold text-white mb-1">{{ todayData.income || '0' }}</h3>
+          <h3 class="text-2xl font-bold text-white mb-1">{{ formatRupiah(todayData.income) }}</h3>
         </div>
         <div class="mt-4 flex flex-col space-y-1 text-xs">
           <div class="flex items-center justify-between text-slate-400">
             <span>{{ yesterdayData.day }} {{ yesterdayData.dates }}</span>
-            <span class="font-semibold text-slate-300">{{ yesterdayData.income || '0' }}</span>
+            <span class="font-semibold text-slate-300">{{ formatRupiah(yesterdayData.income) }}</span>
           </div>
           <div class="flex items-center justify-between text-slate-500">
             <span>{{ dayBeforeData.day }} {{ dayBeforeData.dates }}</span>
-            <span>{{ dayBeforeData.income || '0' }}</span>
+            <span>{{ formatRupiah(dayBeforeData.income) }}</span>
           </div>
         </div>
       </div>
@@ -42,16 +42,16 @@
             <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">Buy</span>
             <span class="bg-amber-500/20 text-amber-300 text-[10px] font-bold px-2 py-0.5 rounded">Hari Ini</span>
           </div>
-          <h3 class="text-2xl font-bold text-white mb-1">{{ todayData.buy || '0' }}</h3>
+          <h3 class="text-2xl font-bold text-white mb-1">{{ formatRupiah(todayData.buy) }}</h3>
         </div>
         <div class="mt-4 flex flex-col space-y-1 text-xs">
           <div class="flex items-center justify-between text-slate-400">
             <span>{{ yesterdayData.day }} {{ yesterdayData.dates }}</span>
-            <span class="font-semibold text-slate-300">{{ yesterdayData.buy || '0' }}</span>
+            <span class="font-semibold text-slate-300">{{ formatRupiah(yesterdayData.buy) }}</span>
           </div>
           <div class="flex items-center justify-between text-slate-500">
             <span>{{ dayBeforeData.day }} {{ dayBeforeData.dates }}</span>
-            <span>{{ dayBeforeData.buy || '0' }}</span>
+            <span>{{ formatRupiah(dayBeforeData.buy) }}</span>
           </div>
         </div>
       </div>
@@ -66,16 +66,16 @@
             <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">Reture</span>
             <span class="bg-red-500/20 text-red-400 text-[10px] font-bold px-2 py-0.5 rounded">Hari Ini</span>
           </div>
-          <h3 class="text-2xl font-bold text-white mb-1">{{ todayData.reture || '0' }}</h3>
+          <h3 class="text-2xl font-bold text-white mb-1">{{ formatRupiah(todayData.reture) }}</h3>
         </div>
         <div class="mt-4 flex flex-col space-y-1 text-xs">
           <div class="flex items-center justify-between text-slate-400">
             <span>{{ yesterdayData.day }} {{ yesterdayData.dates }}</span>
-            <span class="font-semibold text-slate-300">{{ yesterdayData.reture || '0' }}</span>
+            <span class="font-semibold text-slate-300">{{ formatRupiah(yesterdayData.reture) }}</span>
           </div>
           <div class="flex items-center justify-between text-slate-500">
             <span>{{ dayBeforeData.day }} {{ dayBeforeData.dates }}</span>
-            <span>{{ dayBeforeData.reture || '0' }}</span>
+            <span>{{ formatRupiah(dayBeforeData.reture) }}</span>
           </div>
         </div>
       </div>
@@ -90,16 +90,16 @@
             <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">Discount</span>
             <span class="bg-amber-500/20 text-amber-400 text-[10px] font-bold px-2 py-0.5 rounded">Hari Ini</span>
           </div>
-          <h3 class="text-2xl font-bold text-white mb-1">{{ todayData.discountStr || todayData.discount || '0' }}</h3>
+          <h3 class="text-2xl font-bold text-white mb-1">{{ formatRupiah(todayData.discountStr || todayData.discount) }}</h3>
         </div>
         <div class="mt-4 flex flex-col space-y-1 text-xs">
           <div class="flex items-center justify-between text-slate-400">
             <span>{{ yesterdayData.day }} {{ yesterdayData.dates }}</span>
-            <span class="font-semibold text-slate-300">{{ yesterdayData.discount || '0' }}</span>
+            <span class="font-semibold text-slate-300">{{ formatRupiah(yesterdayData.discount) }}</span>
           </div>
           <div class="flex items-center justify-between text-slate-500">
             <span>{{ dayBeforeData.day }} {{ dayBeforeData.dates }}</span>
-            <span>{{ dayBeforeData.discount || '0' }}</span>
+            <span>{{ formatRupiah(dayBeforeData.discount) }}</span>
           </div>
         </div>
       </div>
@@ -126,6 +126,13 @@ const props = defineProps({
 
 const config = useRuntimeConfig()
 const { accessToken } = useAuth()
+
+const formatRupiah = (val: string | number | undefined) => {
+  if (!val && val !== 0) return '0'
+  const num = Number(val)
+  if (isNaN(num)) return '0'
+  return new Intl.NumberFormat('id-ID', { maximumFractionDigits: 0 }).format(num)
+}
 
 const rawData = ref<any[]>([])
 const pending = ref(false)

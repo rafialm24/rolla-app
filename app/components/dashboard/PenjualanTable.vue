@@ -6,7 +6,7 @@
       <!-- Master: Penjualan Store -->
       <div class="bg-slate-800 border border-slate-700 rounded-lg shadow-sm overflow-hidden flex flex-col">
         <div class="border-b border-slate-700 px-5 py-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-          <h3 class="text-lg font-bold text-white font-serif">Data Penjualan (Store)</h3>
+          <h3 class="text-lg font-bold text-white font-serif">Data Penjualan (Produk)</h3>
           <div class="flex items-center space-x-2">
             <input type="date" v-model="storeStartDate" class="bg-slate-900 border border-slate-600 text-slate-300 text-sm rounded-md px-2 py-1 focus:outline-none focus:border-sky-500 w-32" />
             <span class="text-slate-500">-</span>
@@ -24,11 +24,9 @@
             <thead class="text-xs uppercase bg-slate-700 text-slate-300 sticky top-0 z-10 shadow-sm">
               <tr>
                 <th class="px-4 py-3">Action</th>
-                <th class="px-4 py-3">Kode Store</th>
-                <th class="px-4 py-3">Nama Store</th>
-                <th class="px-4 py-3 text-right">Omset</th>
-                <th class="px-4 py-3 text-right">Retur</th>
-                <th class="px-4 py-3 text-right">Persen</th>
+                <th class="px-4 py-3">Nama Produk</th>
+                <th class="px-4 py-3 text-right">qty</th>
+                <th class="px-4 py-3 text-right">Total</th>
               </tr>
             </thead>
             <tbody>
@@ -37,13 +35,11 @@
               </tr>
               <tr v-for="(item, idx) in storeData" :key="idx" class="border-b border-slate-700 hover:bg-slate-700/50 transition-colors" :class="{'bg-sky-900/20': selectedStoreId === item.id_store}">
                 <td class="px-4 py-2">
-                  <button @click="selectStore(item.id_store)" class="bg-rose-500 hover:bg-rose-600 text-white text-xs px-2 py-1 rounded transition-colors">Show</button>
+                  <button @click="selectStore(item.id_produk)" class="bg-rose-500 hover:bg-rose-600 text-white text-xs px-2 py-1 rounded transition-colors">Show</button>
                 </td>
-                <td class="px-4 py-2 font-mono">{{ item.kode_store }}</td>
-                <td class="px-4 py-2">{{ item.name_store }}</td>
-                <td class="px-4 py-2 text-right text-sky-300">{{ formatNumber(item.omset) }}</td>
+                <td class="px-4 py-2">{{ item.name_produk }}</td>
+                <td class="px-4 py-2 text-right text-sky-300">{{ formatNumber(item.qty) }}</td>
                 <td class="px-4 py-2 text-right text-rose-300">{{ formatNumber(item.price) }}</td>
-                <td class="px-4 py-2 text-right font-bold">{{ formatNumber(item.persen) }}%</td>
               </tr>
             </tbody>
           </table>

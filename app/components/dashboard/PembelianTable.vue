@@ -209,7 +209,7 @@ const fetchMaster = async () => {
   
   pendingMaster.value = true; selectedItemId.value = null; detailData.value = []
   try {
-    const res: any = await $fetch(`${config.public.apiBase || ''}/produksi/report-produksi/pembelian`, {
+    const res: any = await $fetch(`${config.public.apiBase || ''}/produksi/dhasbord/get-pembelian-produksi`, {
       headers: { 'Authorization': `Bearer ${accessToken.value}` },
       params: { v_prod_id: props.prodId, v_start_date: startDate.value, v_end_date: endDate.value }
     })
@@ -225,7 +225,7 @@ const selectItem = async (id: number) => {
   selectedItemId.value = id; pendingDetail.value = true
   
   try {
-    const res: any = await $fetch(`${config.public.apiBase || ''}/produksi/report-produksi/pembelian-detail`, {
+    const res: any = await $fetch(`${config.public.apiBase || ''}/produksi/dhasbord/get-pembelian-produksi-detail`, {
       headers: { 'Authorization': `Bearer ${accessToken.value}` },
       params: { v_prod_id: props.prodId, v_start_date: startDate.value, v_end_date: endDate.value, v_id_item: id }
     })
@@ -245,7 +245,7 @@ const fetchAllData = async () => {
   if (!allPeriode.value) return
   pendingAll.value = true
   try {
-    const res: any = await $fetch(`${config.public.apiBase || ''}/produksi/report-produksi/data-pembelian`, {
+    const res: any = await $fetch(`${config.public.apiBase || ''}/produksi/dhasbord/get-data-pembelian-produksi`, {
       headers: { 'Authorization': `Bearer ${accessToken.value}` },
       params: { v_id_prod: props.prodId, v_periode: allPeriode.value }
     })

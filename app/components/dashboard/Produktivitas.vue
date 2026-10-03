@@ -91,7 +91,7 @@ const fetchProduktivitas = async () => {
   if (!periode.value) return
   pending.value = true
   try {
-    const res: any = await $fetch(`${config.public.apiBase || ''}/produksi/report-produksi/produktivitas`, {
+    const res: any = await $fetch(`${config.public.apiBase || ''}/produksi/dhasbord/get-produktivitas-prod`, {
       headers: { 'Authorization': `Bearer ${accessToken.value}` },
       params: { v_id_prod: props.prodId, v_periode: periode.value }
     })

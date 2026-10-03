@@ -257,7 +257,7 @@ const fetchCabang = async () => {
   if (!cabangStartDate.value || !cabangEndDate.value) return
   pendingCabang.value = true; selectedCabangId.value = null; cabangDetailData.value = []
   try {
-    const res: any = await $fetch(`${config.public.apiBase || ''}/produksi/report-produksi/sales-cabang`, {
+    const res: any = await $fetch(`${config.public.apiBase || ''}/produksi/dhasbord/get-sales-cabang-prod`, {
       headers: { 'Authorization': `Bearer ${accessToken.value}` },
       params: { v_prod_id: props.prodId, v_start_date: cabangStartDate.value, v_end_date: cabangEndDate.value }
     })
@@ -272,7 +272,7 @@ const fetchCabang = async () => {
 const selectCabang = async (id: number) => {
   selectedCabangId.value = id; pendingCabangDetail.value = true
   try {
-    const res: any = await $fetch(`${config.public.apiBase || ''}/produksi/report-produksi/sales-cabang-detail`, {
+    const res: any = await $fetch(`${config.public.apiBase || ''}/produksi/dhasbord/get-sales-cabang-prod-detail`, {
       headers: { 'Authorization': `Bearer ${accessToken.value}` },
       params: { v_prod_id: props.prodId, v_start_date: cabangStartDate.value, v_end_date: cabangEndDate.value, v_cab: id }
     })

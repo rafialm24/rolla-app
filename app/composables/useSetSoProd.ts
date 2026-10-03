@@ -116,6 +116,58 @@ export const useSetSoProd = () => {
     }
   }
 
+  const fetchListRolla = async (keyword: string = '', page: number = 1, perPage: number = 10) => {
+    isLoading.value = true
+    try {
+      const res: any = await useApiFetch('/produksi/set-stock-opname/list-rolla', {
+        params: {
+          v_aplikasi_id: 7,
+          v_lokasi_id: activeProdId.value || 0,
+          v_where: keyword,
+          v_page: page,
+          v_row_page: perPage
+        }
+      })
+      const data = res.data || res
+      if (data && Array.isArray(data)) {
+        listData.value = data
+        if (data.length > 0) {
+          totalRows.value = data[0].total_row || data.length
+        } else {
+          totalRows.value = 0
+        }
+      } else {
+        listData.value = []
+        totalRows.value = 0
+      }
+      return { success: true, data }
+    } catch (err) {
+      console.error(err)
+      return { success: false }
+    } finally {
+      isLoading.value = false
+    }
+  }
+
+  const postingRollaDc = async () => {
+    isSaving.value = true
+    try {
+      const res: any = await useApiFetch('/produksi/set-stock-opname/posting-rolla-dc', {
+        method: 'POST',
+        body: {
+          v_aplikasi_id: 2,
+          v_lokasi_id: activeProdId.value || 0
+        }
+      })
+      return { success: true, data: res.data || res }
+    } catch (err) {
+      console.error(err)
+      return { success: false }
+    } finally {
+      isSaving.value = false
+    }
+  }
+
   return {
     listData,
     totalRows,
@@ -125,6 +177,8 @@ export const useSetSoProd = () => {
     cekBarcodeItem,
     setSo,
     deleteRowSo,
-    postingListSo
+    postingListSo,
+    fetchListRolla,
+    postingRollaDc
   }
 }

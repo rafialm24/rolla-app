@@ -269,7 +269,7 @@ const chartOptions = (categories: string[]) => ({
     type: 'bar',
     toolbar: { show: false },
     background: 'transparent',
-    foreColor: '#c8ae8e'
+    foreColor: '#64748b'
   },
   plotOptions: {
     bar: {
@@ -288,8 +288,8 @@ const chartOptions = (categories: string[]) => ({
   },
   xaxis: {
     categories: categories,
-    axisBorder: { color: '#65432d' },
-    axisTicks: { color: '#65432d' }
+    axisBorder: { color: '#cbd5e1' },
+    axisTicks: { color: '#cbd5e1' }
   },
   yaxis: {
     title: { text: 'Rupiah' },
@@ -302,14 +302,14 @@ const chartOptions = (categories: string[]) => ({
     }
   },
   grid: {
-    borderColor: '#5a3a27',
+    borderColor: '#e2e8f0',
     strokeDashArray: 4,
   },
   fill: {
     opacity: 1
   },
   tooltip: {
-    theme: 'dark',
+    theme: 'light',
     y: {
       formatter: (val: number) => `Rp ${val.toLocaleString('id-ID')}`
     }

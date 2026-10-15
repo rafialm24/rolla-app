@@ -131,6 +131,101 @@
         </div>
       </div>
 
+      <!-- STOCK OPNAME ROLLA DC -->
+      <div class="mt-8 backdrop-blur-md bg-white/90 rounded-[2rem] border border-white shadow-[0_8px_30px_rgb(0,0,0,0.06)] overflow-hidden flex flex-col">
+        <div class="px-6 py-4 bg-gradient-to-r from-indigo-50 to-slate-50 border-b border-slate-100 flex flex-wrap items-center justify-between gap-4">
+          <div>
+            <h2 class="text-sm font-black text-slate-800 uppercase tracking-wide">Stock Opname Rolla DC</h2>
+            <p class="mt-1 text-[10px] font-semibold text-slate-400">Data Stock Opname Rolla</p>
+          </div>
+          <div class="flex flex-wrap items-center gap-3">
+            <UButton @click="handleApproveRolla" :loading="isSaving" size="sm" color="emerald" variant="solid" icon="i-heroicons-check-circle" class="rounded-xl font-bold uppercase tracking-wider text-[10px]">
+              APPROVE ROLLA DC
+            </UButton>
+            <UInput v-model="rollaKeyword" @keyup.enter="loadRollaData" icon="i-heroicons-magnifying-glass" placeholder="Search produk..." class="w-48" />
+          </div>
+        </div>
+
+        <div class="p-6">
+          <div class="border border-slate-100 rounded-2xl overflow-hidden shadow-sm bg-white">
+            <div class="overflow-x-auto custom-scrollbar">
+              <table class="w-full text-sm text-left">
+                <thead class="bg-slate-50/80 border-b border-slate-100">
+                  <tr>
+                    <th class="px-4 py-3 font-bold text-slate-500 uppercase tracking-wider text-[10px] sticky left-0 bg-slate-50 z-10">Action</th>
+                    <th class="px-4 py-3 font-bold text-slate-500 uppercase tracking-wider text-[10px] whitespace-nowrap">Kode Produk</th>
+                    <th class="px-4 py-3 font-bold text-slate-500 uppercase tracking-wider text-[10px] whitespace-nowrap min-w-[200px]">Nama Produk</th>
+                    <th class="px-4 py-3 font-bold text-slate-500 uppercase tracking-wider text-[10px]">Kategori</th>
+                    <th class="px-4 py-3 font-bold text-slate-500 uppercase tracking-wider text-[10px]">Type Produk</th>
+                    <th class="px-4 py-3 font-bold text-slate-500 uppercase tracking-wider text-[10px]">Brand</th>
+                    <th class="px-4 py-3 font-bold text-slate-500 uppercase tracking-wider text-[10px]">UOM SO</th>
+                    <th class="px-4 py-3 font-bold text-slate-500 uppercase tracking-wider text-[10px] text-right">Harga Satuan</th>
+                    <th class="px-4 py-3 font-bold text-slate-500 uppercase tracking-wider text-[10px] text-right">Qty Besar</th>
+                    <th class="px-4 py-3 font-bold text-slate-500 uppercase tracking-wider text-[10px] text-right">Qty Kecil</th>
+                    <th class="px-4 py-3 font-bold text-slate-500 uppercase tracking-wider text-[10px] text-right">Qty Stock</th>
+                    <th class="px-4 py-3 font-bold text-slate-500 uppercase tracking-wider text-[10px] text-right">Price Stock</th>
+                    <th class="px-4 py-3 font-bold text-slate-500 uppercase tracking-wider text-[10px] text-right text-rose-500">Qty Selisih</th>
+                    <th class="px-4 py-3 font-bold text-slate-500 uppercase tracking-wider text-[10px] text-right text-rose-500">Price Selisih</th>
+                    <th class="px-4 py-3 font-bold text-slate-500 uppercase tracking-wider text-[10px] text-right text-emerald-600">Qty Actual</th>
+                    <th class="px-4 py-3 font-bold text-slate-500 uppercase tracking-wider text-[10px] text-right text-emerald-600">Price Actual</th>
+                    <th class="px-4 py-3 font-bold text-slate-500 uppercase tracking-wider text-[10px]">Lokasi</th>
+                    <th class="px-4 py-3 font-bold text-slate-500 uppercase tracking-wider text-[10px]">User SO</th>
+                    <th class="px-4 py-3 font-bold text-slate-500 uppercase tracking-wider text-[10px]">Tanggal SO</th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-50">
+                  <tr v-if="isRollaLoading">
+                    <td colspan="19" class="px-4 py-12 text-center text-slate-400 font-medium">
+                      <UIcon name="i-heroicons-arrow-path" class="w-8 h-8 mx-auto mb-3 animate-spin text-indigo-400" />
+                      <p class="text-xs uppercase tracking-widest">Loading Stock Opname Rolla DC...</p>
+                    </td>
+                  </tr>
+                  <tr v-else-if="rollaListData.length === 0">
+                    <td colspan="19" class="px-4 py-12 text-center text-slate-400 font-medium">
+                      <UIcon name="i-heroicons-document-magnifying-glass" class="w-8 h-8 mx-auto mb-3 text-slate-300" />
+                      <p class="text-xs uppercase tracking-widest">No data found</p>
+                    </td>
+                  </tr>
+                  <tr v-else v-for="item in rollaListData" :key="item.id" class="hover:bg-indigo-50/50 transition-colors group">
+                    <td class="px-4 py-2 sticky left-0 bg-white group-hover:bg-indigo-50/50 shadow-[1px_0_0_0_#f8fafc]">
+                      <UButton @click="handleRevisiRolla(item)" size="xs" color="orange" variant="soft" class="font-bold text-[10px] rounded-lg">REVISI</UButton>
+                    </td>
+                    <td class="px-4 py-2 font-mono text-[10px] text-slate-600">{{ item.kode_product }}</td>
+                    <td class="px-4 py-2 font-semibold text-slate-800 text-xs">{{ item.name_produk }}</td>
+                    <td class="px-4 py-2 text-slate-500 text-[10px]">{{ item.name_prod_cate }}</td>
+                    <td class="px-4 py-2 text-slate-500 text-[10px]">{{ item.name_buy }}</td>
+                    <td class="px-4 py-2 text-slate-500 text-[10px]">{{ item.brand }}</td>
+                    <td class="px-4 py-2 text-slate-500 text-[10px]">{{ item.name_prod_uom }}</td>
+                    <td class="px-4 py-2 text-slate-800 font-semibold text-right text-xs">{{ formatNumber(item.price) }}</td>
+                    <td class="px-4 py-2 text-slate-600 text-right text-xs">{{ formatNumber(item.qty_big) }}</td>
+                    <td class="px-4 py-2 text-slate-600 text-right text-xs">{{ formatNumber(item.qty_lit) }}</td>
+                    <td class="px-4 py-2 text-slate-800 font-bold text-right text-xs">{{ formatNumber(item.qty_stock) }}</td>
+                    <td class="px-4 py-2 text-slate-600 text-right text-xs">{{ formatNumber(item.price_qty_stock) }}</td>
+                    <td class="px-4 py-2 font-bold text-right text-xs" :class="item.seleisih < 0 ? 'text-rose-500' : 'text-emerald-500'">{{ formatNumber(item.seleisih) }}</td>
+                    <td class="px-4 py-2 font-semibold text-right text-xs" :class="item.price_seleisih < 0 ? 'text-rose-500' : 'text-emerald-500'">{{ formatNumber(item.price_seleisih) }}</td>
+                    <td class="px-4 py-2 text-emerald-600 font-bold text-right text-xs">{{ formatNumber(item.qty_so) }}</td>
+                    <td class="px-4 py-2 text-emerald-600 font-semibold text-right text-xs">{{ formatNumber(item.price_qty_so) }}</td>
+                    <td class="px-4 py-2 text-slate-500 text-[10px]">{{ item.lokasi }}</td>
+                    <td class="px-4 py-2 text-slate-500 text-[10px]">{{ item.usrnm }}</td>
+                    <td class="px-4 py-2 text-slate-500 text-[10px] whitespace-nowrap">{{ formatDateTime(item.create_date) }}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="px-4 py-3 border-t border-slate-100 bg-slate-50/50 flex items-center justify-between">
+              <div class="flex items-center gap-3">
+                <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">Rows:</span>
+                <USelect v-model="rollaPerPage" :options="[10, 20, 50, 100]" class="w-20" size="xs" @change="rollaPage = 1; loadRollaData()" />
+              </div>
+              <div class="flex flex-1 justify-center">
+                <UPagination v-model="rollaPage" :page-count="rollaPerPage" :total="rollaTotalRows" size="sm" @update:model-value="loadRollaData" />
+              </div>
+              <div class="text-xs font-bold text-slate-400 uppercase tracking-wider">Total: {{ rollaTotalRows }}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
     </div>
     </div>
   </NuxtLayout>
@@ -146,7 +241,9 @@ definePageMeta({ layout: false })
 const { activeAppId, activeLocationId } = useProduksi()
 const { 
   listData, totalRows, isLoading, isSaving,
-  fetchStockOpname, revisiRowSo, postingApprove 
+  fetchStockOpname, revisiRowSo, postingApprove,
+  rollaListData, rollaTotalRows, isRollaLoading,
+  fetchStockOpnameRolla, revisiRowSoRolla, postingApproveRolla
 } = useStockOpnameProd()
 
 const toast = useToast()
@@ -156,12 +253,19 @@ const config = useRuntimeConfig()
 const keyword = ref('')
 const page = ref(1)
 const perPage = ref(10)
+const rollaKeyword = ref('')
+const rollaPage = ref(1)
+const rollaPerPage = ref(10)
 
 const today = new Date().toISOString().split('T')[0]
 const postingDate = ref(today)
 
 const loadData = async () => {
   await fetchStockOpname(keyword.value, page.value, perPage.value)
+}
+
+const loadRollaData = async () => {
+  await fetchStockOpnameRolla(rollaKeyword.value, rollaPage.value, rollaPerPage.value)
 }
 
 const handleRevisi = async (row: any) => {
@@ -184,6 +288,30 @@ const handleApproveStock = async () => {
       loadData()
     } else {
       toast.add({ title: 'Gagal', description: 'Data gagal diapprove', color: 'red' })
+    }
+  }
+}
+
+const handleRevisiRolla = async (row: any) => {
+  if (confirm(`Yakin ingin merevisi data Stock Opname Rolla untuk produk ${row.name_produk}?`)) {
+    const res = await revisiRowSoRolla(row.id)
+    if (res.success && res.data?.result === 1) {
+      toast.add({ title: 'Berhasil', description: 'Data Stock Opname Rolla berhasil direvisi', color: 'green' })
+      loadRollaData()
+    } else {
+      toast.add({ title: 'Gagal', description: 'Data Stock Opname Rolla gagal direvisi', color: 'red' })
+    }
+  }
+}
+
+const handleApproveRolla = async () => {
+  if (confirm('Yakin ingin Approve Stock Opname Rolla DC?')) {
+    const res = await postingApproveRolla()
+    if (res.success && res.data?.result === 1) {
+      toast.add({ title: 'Berhasil', description: 'Data Stock Opname Rolla DC berhasil diapprove', color: 'green' })
+      loadRollaData()
+    } else {
+      toast.add({ title: 'Gagal', description: 'Data Stock Opname Rolla DC gagal diapprove', color: 'red' })
     }
   }
 }
@@ -212,6 +340,7 @@ const formatDateTime = (dateStr: string) => {
 
 onMounted(() => {
   loadData()
+  loadRollaData()
 })
 </script>
 

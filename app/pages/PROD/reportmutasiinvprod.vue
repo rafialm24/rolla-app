@@ -8,12 +8,34 @@ const { reportData, isLoading, fetchReport, exportToCsv } = useReportMutasiInvPr
 const startDate = ref('')
 const endDate = ref('')
 
+const columnOrder = [
+  'ID',
+  'MUTASI DATE',
+  'MU NUMBER',
+  'KODE PROD',
+  'NAME PROD',
+  'KODE PRODUK',
+  'NAME PRODUK',
+  'NAME PROD UOM',
+  'PRICE',
+  'QTY',
+  'TOTAL',
+  'POSTING BY'
+]
+
 const columns = computed(() => {
   const firstRow = reportData.value[0]
   if (!firstRow) return []
-  return Object.keys(firstRow).map(key => ({
+  const keys = Object.keys(firstRow)
+  const labelFor = (key: string) => key.replace(/_/g, ' ').toUpperCase()
+  const orderedKeys = [
+    ...columnOrder.flatMap(label => keys.filter(key => labelFor(key) === label)),
+    ...keys.filter(key => !columnOrder.includes(labelFor(key)))
+  ]
+
+  return orderedKeys.map(key => ({
     key,
-    label: key.replace(/_/g, ' ').toUpperCase()
+    label: labelFor(key)
   }))
 })
 
@@ -55,7 +77,7 @@ onMounted(setDefaultDates)
             CARI
           </UButton>
         </div>
-        <UButton icon="i-heroicons-document-arrow-down" color="emerald" class="font-bold tracking-wide" :disabled="reportData.length === 0" @click="exportToCsv()">
+        <UButton icon="i-heroicons-document-arrow-down" color="emerald" class="font-bold tracking-wide" :disabled="reportData.length === 0" @click="exportToCsv('report_mutasi_inventory_produksi.csv', columns.map(column => column.key))">
           EXPORT CSV
         </UButton>
       </div>

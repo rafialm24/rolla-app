@@ -30,10 +30,16 @@ export const useReportMutasiInvProd = () => {
     }
   }
 
-  const exportToCsv = (filename = 'report_mutasi_inventory_produksi.csv') => {
+  const exportToCsv = (
+    filename = 'report_mutasi_inventory_produksi.csv',
+    columnOrder?: string[]
+  ) => {
     if (reportData.value.length === 0) return
 
-    const columns = Object.keys(reportData.value[0])
+    const availableColumns = Object.keys(reportData.value[0])
+    const columns = columnOrder?.length
+      ? columnOrder.filter(key => availableColumns.includes(key))
+      : availableColumns
     const escapeCsv = (value: any) => `"${String(value ?? '').replace(/"/g, '""')}"`
     const csv = [
       columns.map(escapeCsv).join(','),

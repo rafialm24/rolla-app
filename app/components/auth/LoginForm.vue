@@ -142,7 +142,7 @@ const handleSubmit = async () => {
 .field__control { position: relative; display: flex; align-items: center; margin-top: 8px; }
 .field__control > svg { position: absolute; left: 15px; width: 18px; height: 18px; color: #a58670; pointer-events: none; }
 
-.field input { width: 100%; height: 50px; padding: 0 43px; border: 1px solid rgba(93, 57, 35, 0.16); border-radius: 12px; outline: none; color: #321b10; background: rgba(255, 253, 249, 0.73); box-shadow: 0 1px 0 rgba(255, 255, 255, 0.7) inset; font-size: 0.83rem; transition: border-color 180ms ease, box-shadow 180ms ease, background-color 180ms ease; }
+.field input { width: 100%; height: 56px; padding: 0 43px; border: 1px solid rgba(93, 57, 35, 0.16); border-radius: 12px; outline: none; color: #321b10; background: rgba(255, 253, 249, 0.73); box-shadow: 0 1px 0 rgba(255, 255, 255, 0.7) inset; font-size: 0.83rem; transition: border-color 180ms ease, box-shadow 180ms ease, background-color 180ms ease; }
 .field input::placeholder { color: #b9a595; }
 .field input:hover { border-color: rgba(113, 68, 41, 0.28); background: rgba(255, 253, 249, 0.96); }
 .field input:focus { border-color: #b47148; background: #fffdfa; box-shadow: 0 0 0 3px rgba(183, 112, 69, 0.11); }
@@ -159,7 +159,7 @@ const handleSubmit = async () => {
 .remember input:checked + .remember__box svg { opacity: 1; transform: scale(1); }
 .remember input:focus-visible + .remember__box { box-shadow: 0 0 0 3px rgba(183, 112, 69, 0.16); }
 
-.submit-button { display: flex; width: 100%; height: 52px; align-items: center; justify-content: center; gap: 10px; margin-top: 2px; border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 12px; color: #fffaf3; background: linear-gradient(135deg, #3d2114, #6b3b24 58%, #895132); box-shadow: 0 12px 25px rgba(59, 30, 15, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.12); font-size: 0.78rem; font-weight: 800; letter-spacing: 0.025em; cursor: pointer; transform: translate3d(0, 0, 0); transition: transform 250ms cubic-bezier(0.22, 1, 0.36, 1), box-shadow 250ms ease, filter 250ms ease; }
+.submit-button { display: flex; width: 100%; height: 56px; align-items: center; justify-content: center; gap: 10px; margin-top: 2px; border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 12px; color: #fffaf3; background: linear-gradient(135deg, #3d2114, #6b3b24 58%, #895132); box-shadow: 0 12px 25px rgba(59, 30, 15, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.12); font-size: 0.78rem; font-weight: 800; letter-spacing: 0.025em; cursor: pointer; transform: translate3d(0, 0, 0); transition: transform 250ms cubic-bezier(0.22, 1, 0.36, 1), box-shadow 250ms ease, filter 250ms ease; }
 .submit-button:hover:not(:disabled) { box-shadow: 0 16px 30px rgba(59, 30, 15, 0.27), inset 0 1px 0 rgba(255, 255, 255, 0.16); filter: brightness(1.06); transform: translate3d(0, -2px, 0); }
 .submit-button:active:not(:disabled) { transform: translate3d(0, 0, 0) scale(0.995); }
 .submit-button:focus-visible { outline: 3px solid rgba(183, 112, 69, 0.3); outline-offset: 3px; }

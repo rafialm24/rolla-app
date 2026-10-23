@@ -42,14 +42,13 @@
             </svg>
             <span>Koneksi terenkripsi &amp; aman</span>
           </div>
+
+          <p class="production-credit">Production by <strong>PT. BINA</strong></p>
         </div>
       </div>
 
       <div
-        ref="productArea"
         class="product-panel"
-        @pointermove="handlePointerMove"
-        @pointerleave="resetPointer"
       >
         <div class="product-panel__copy">
           <p class="product-panel__eyebrow"><span></span> Signature product</p>
@@ -60,7 +59,7 @@
         <div class="product-visual" role="img" aria-label="Rolla Brownies Panggang dengan topping almond dan kemasan premium">
           <div class="product-shadow"></div>
           <div class="product-idle">
-            <div ref="productParallax" class="product-parallax">
+            <div class="product-parallax">
               <div class="product-highlight"></div>
               <picture v-if="useStaticFallback" class="product-media product-media--fallback">
                 <img src="/Rolla_Brownise_nobg.png" alt="" width="1024" height="1024" decoding="async" />
@@ -78,6 +77,7 @@
                 preload="metadata"
                 disablepictureinpicture
                 tabindex="-1"
+                @error="handleVideoError"
               ></video>
             </div>
           </div>
@@ -105,46 +105,16 @@ useHead({
   ]
 })
 
-const productArea = ref<HTMLElement | null>(null)
-const productParallax = ref<HTMLElement | null>(null)
 const productVideo = ref<HTMLVideoElement | null>(null)
 const isButtonHovered = ref(false)
 const isButtonPressed = ref(false)
 const isLeaving = ref(false)
 const useStaticFallback = ref(false)
 
-let frameId = 0
-let currentX = 0
-let currentY = 0
-let targetX = 0
-let targetY = 0
 let pressTimer: ReturnType<typeof setTimeout> | undefined
 
-const renderParallax = () => {
-  currentX += (targetX - currentX) * 0.075
-  currentY += (targetY - currentY) * 0.075
-
-  if (productParallax.value) {
-    productParallax.value.style.transform = `rotateX(${currentX.toFixed(3)}deg) rotateY(${currentY.toFixed(3)}deg)`
-  }
-
-  frameId = requestAnimationFrame(renderParallax)
-}
-
-const handlePointerMove = (event: PointerEvent) => {
-  if (useStaticFallback.value || event.pointerType === 'touch' || !productArea.value) return
-
-  const bounds = productArea.value.getBoundingClientRect()
-  const normalizedX = ((event.clientX - bounds.left) / bounds.width) * 2 - 1
-  const normalizedY = ((event.clientY - bounds.top) / bounds.height) * 2 - 1
-
-  targetX = Math.max(-3, Math.min(3, normalizedY * -3))
-  targetY = Math.max(-4, Math.min(4, normalizedX * 4))
-}
-
-const resetPointer = () => {
-  targetX = 0
-  targetY = 0
+const handleVideoError = () => {
+  useStaticFallback.value = true
 }
 
 const handleProductPress = () => {
@@ -157,30 +127,21 @@ const handleProductPress = () => {
 
 onMounted(() => {
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
-  const coarsePointer = window.matchMedia('(pointer: coarse)').matches
-  const smallViewport = window.matchMedia('(max-width: 767px)').matches
   const deviceMemory = (navigator as Navigator & { deviceMemory?: number }).deviceMemory
   const saveData = (navigator as Navigator & { connection?: { saveData?: boolean } }).connection?.saveData
 
-  useStaticFallback.value = reduceMotion || smallViewport || Boolean(saveData) || (deviceMemory !== undefined && deviceMemory <= 2)
-
-  if (!reduceMotion && !coarsePointer) {
-    frameId = requestAnimationFrame(renderParallax)
-  }
+  useStaticFallback.value = reduceMotion || Boolean(saveData) || (deviceMemory !== undefined && deviceMemory <= 2)
 
   if (!useStaticFallback.value) {
     if (productVideo.value) {
       productVideo.value.muted = true
       productVideo.value.volume = 0
     }
-    productVideo.value?.play().catch(() => {
-      useStaticFallback.value = true
-    })
+    productVideo.value?.play().catch(handleVideoError)
   }
 })
 
 onBeforeUnmount(() => {
-  cancelAnimationFrame(frameId)
   if (pressTimer) clearTimeout(pressTimer)
 })
 </script>
@@ -190,13 +151,14 @@ onBeforeUnmount(() => {
   --chocolate-950: #1d0e08;
   --cream: #f8efe2;
   position: relative;
-  min-height: 100vh;
-  min-height: 100svh;
+  width: 100%;
+  height: 100vh;
+  height: 100svh;
   overflow: hidden;
   color: var(--chocolate-950);
   background:
-    radial-gradient(circle at 73% 48%, rgba(255, 245, 226, 0.92) 0, rgba(225, 194, 159, 0.48) 29%, transparent 58%),
-    linear-gradient(118deg, #f7efe4 0%, #ead8c1 43%, #6f4630 43.1%, #2a160e 100%);
+    radial-gradient(circle at 72% 48%, rgba(255, 245, 226, 0.78) 0, rgba(225, 194, 159, 0.28) 29%, transparent 58%),
+    linear-gradient(110deg, #2a160e 0%, #6a4731 25%, #ad8563 41%, #eee0cf 41.1%, #f8f0e5 100%);
 }
 
 .login-page::after {
@@ -223,7 +185,8 @@ onBeforeUnmount(() => {
 }
 
 .ambient--cocoa {
-  right: -12%;
+  right: auto;
+  left: -12%;
   bottom: -35%;
   width: 62vw;
   height: 52vw;
@@ -243,23 +206,30 @@ onBeforeUnmount(() => {
   position: relative;
   z-index: 1;
   display: grid;
-  grid-template-columns: minmax(390px, 42%) minmax(0, 58%);
-  min-height: 100vh;
-  min-height: 100svh;
+  grid-template-columns: minmax(0, 41%) minmax(390px, 59%);
+  height: 100%;
+  min-height: 0;
 }
 
 .login-panel {
+  grid-column: 2;
+  grid-row: 1;
   display: flex;
   align-items: center;
   padding: clamp(28px, 5vw, 78px);
-  background: rgba(255, 250, 242, 0.86);
-  border-right: 1px solid rgba(91, 52, 31, 0.1);
-  backdrop-filter: blur(24px);
-  -webkit-backdrop-filter: blur(24px);
+  background: linear-gradient(90deg, rgba(221, 199, 174, 0.78) 0%, rgba(249, 241, 230, 0.95) 25%, rgba(255, 251, 245, 0.98) 100%);
+  backdrop-filter: blur(18px) saturate(1.04);
+  -webkit-backdrop-filter: blur(18px) saturate(1.04);
 }
 
 .login-panel__inner {
-  width: min(100%, 430px);
+  box-sizing: border-box;
+  width: min(100%, 480px);
+  padding: clamp(18px, 2.4vw, 34px);
+  border: 1px solid rgba(112, 75, 49, 0.2);
+  border-radius: 22px;
+  background: rgba(255, 252, 247, 0.88);
+  box-shadow: 0 24px 64px rgba(67, 43, 26, 0.12), 0 3px 12px rgba(67, 43, 26, 0.05), inset 0 1px 0 rgba(255, 255, 255, 0.86);
   margin-inline: auto;
   animation: panel-enter 800ms cubic-bezier(0.16, 1, 0.3, 1) both;
 }
@@ -268,7 +238,7 @@ onBeforeUnmount(() => {
   display: flex;
   align-items: center;
   gap: 13px;
-  margin-bottom: clamp(38px, 7vh, 72px);
+  margin-bottom: clamp(18px, 3vh, 30px);
 }
 
 .brand__mark {
@@ -286,36 +256,38 @@ onBeforeUnmount(() => {
 .brand__mark img { width: 100%; height: 100%; object-fit: cover; }
 .brand__name { margin: 0; color: #2a150c; font-size: 0.98rem; font-weight: 750; letter-spacing: 0.015em; }
 .brand__eyebrow { margin: 2px 0 0; color: #98765f; font-size: 0.64rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; }
-.login-copy { margin-bottom: 31px; }
+.login-copy { margin-bottom: 25px; }
 .login-copy__kicker { margin: 0 0 12px; color: #a4643d !important; font-size: 0.7rem !important; font-weight: 800; letter-spacing: 0.14em; text-transform: uppercase; }
 .login-copy h1 { margin: 0; color: #2b160d; font-family: Georgia, 'Times New Roman', serif; font-size: clamp(2.15rem, 3.4vw, 3.15rem); font-weight: 500; letter-spacing: -0.045em; line-height: 1.04; }
 .login-copy p { max-width: 370px; margin: 17px 0 0; color: #846957; font-size: 0.86rem; line-height: 1.7; }
 
-.secure-note { display: flex; align-items: center; gap: 7px; margin-top: 25px; color: #a58b78; font-size: 0.67rem; font-weight: 600; }
+.secure-note { display: flex; align-items: center; gap: 7px; margin-top: 19px; color: #947863; font-size: 0.68rem; font-weight: 600; }
 .secure-note svg { width: 14px; height: 14px; }
+.production-credit { margin: 24px 0 0; padding-top: 14px; border-top: 1px solid rgba(112, 75, 49, 0.14); color: #9b806b; font-size: 0.66rem; font-weight: 600; letter-spacing: 0.045em; }
+.production-credit strong { color: #70452b; font-weight: 800; letter-spacing: 0.12em; }
 
-.product-panel { position: relative; min-width: 0; overflow: hidden; perspective: 1200px; }
-.product-panel::before { content: ''; position: absolute; inset: 0; background: linear-gradient(90deg, rgba(41, 20, 11, 0.2), transparent 20%), radial-gradient(circle at 58% 48%, rgba(255, 232, 199, 0.3), transparent 40%); pointer-events: none; }
+.product-panel { position: relative; grid-column: 1; grid-row: 1; min-width: 0; min-height: 0; height: 100%; overflow: hidden; padding: 0; background: linear-gradient(145deg, #765139, #29170f); }
+.product-panel::before { content: ''; position: absolute; z-index: 3; inset: 0; background: linear-gradient(270deg, rgba(221, 199, 174, 0.34) 0%, rgba(177, 139, 102, 0.16) 9%, rgba(41, 20, 11, 0) 28%), radial-gradient(circle at 58% 48%, rgba(255, 232, 199, 0.22), transparent 40%); pointer-events: none; }
 
-.product-panel__copy { position: absolute; z-index: 4; top: clamp(40px, 8vh, 86px); left: clamp(38px, 5vw, 86px); max-width: 430px; color: #fff8ee; animation: copy-enter 950ms 180ms cubic-bezier(0.16, 1, 0.3, 1) both; }
+.product-panel__copy { display: none; }
 .product-panel__eyebrow { display: flex; align-items: center; gap: 10px; margin: 0 0 18px; color: #e7bea0; font-size: 0.63rem; font-weight: 800; letter-spacing: 0.2em; text-transform: uppercase; }
 .product-panel__eyebrow span { display: block; width: 28px; height: 1px; background: #d99b6f; }
 .product-panel__copy h2 { margin: 0; font-family: Georgia, 'Times New Roman', serif; font-size: clamp(2.35rem, 4.1vw, 4.75rem); font-weight: 400; letter-spacing: -0.048em; line-height: 0.98; text-wrap: balance; }
 .product-panel__copy h2 em { color: #edc5a6; font-weight: 400; }
 .product-panel__copy > p:last-child { max-width: 360px; margin: 20px 0 0; color: rgba(255, 239, 222, 0.63); font-size: 0.77rem; line-height: 1.7; }
 
-.product-visual { position: absolute; z-index: 2; inset: 18% -4% 4% 0; display: grid; place-items: center; pointer-events: none; transform: translate3d(5%, 8%, 0); }
-.product-idle { position: relative; width: min(94%, 940px); height: min(78vh, 740px); transform-origin: 54% 60%; animation: product-idle 7.5s ease-in-out infinite; will-change: transform; }
-.product-parallax { position: relative; width: 100%; height: 100%; transform-style: preserve-3d; transform-origin: 52% 56%; transition: filter 700ms ease; will-change: transform, filter; }
-.product-media { display: block; width: 100%; height: 100%; object-fit: contain; filter: drop-shadow(0 32px 34px rgba(18, 7, 2, 0.4)); transform: translateZ(26px); }
-.product-media--video { border: 0; outline: 0; }
+.product-visual { position: absolute; z-index: 2; inset: 0; display: grid; min-width: 0; place-items: center; pointer-events: none; }
+.product-idle { position: relative; width: 100%; height: 100%; transform: none !important; animation: none !important; }
+.product-parallax { position: relative; width: 100%; height: 100%; transform: none !important; }
+.product-media { display: block; width: 100%; height: 100%; object-fit: contain; filter: none; transform: none; }
+.product-media--video { border: 0; outline: 0; object-fit: cover; object-position: center center; }
 .product-media--fallback img { width: 100%; height: 100%; object-fit: contain; }
 
-.product-highlight { position: absolute; z-index: 3; top: 13%; right: 15%; width: 32%; height: 55%; border-radius: 50%; opacity: 0; background: linear-gradient(110deg, transparent 12%, rgba(255, 235, 206, 0.2) 49%, transparent 74%); filter: blur(18px); transform: translateZ(58px) rotate(13deg); transition: opacity 650ms ease; pointer-events: none; }
-.product-shadow { position: absolute; z-index: -1; left: 50%; bottom: 7%; width: 60%; height: 10%; border-radius: 50%; opacity: 0.58; background: rgba(25, 10, 4, 0.76); filter: blur(23px); transform: translate3d(-42%, 0, 0) scaleX(1); animation: shadow-breathe 7.5s ease-in-out infinite; transition: transform 600ms ease, opacity 600ms ease; }
+.product-highlight, .product-shadow { display: none; }
 
 .product-caption { position: absolute; z-index: 4; right: clamp(28px, 4vw, 70px); bottom: clamp(24px, 4vh, 50px); left: clamp(38px, 5vw, 86px); display: flex; align-items: center; gap: 14px; color: rgba(255, 239, 224, 0.56); font-size: 0.59rem; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; }
 .product-caption__line { flex: 1; height: 1px; background: rgba(255, 238, 222, 0.14); }
+.product-caption { display: none; }
 
 .is-button-hovered .product-idle { animation-play-state: paused; transform: translate3d(0, -5px, 0) rotateX(-1.2deg) scale(1.008); transition: transform 750ms cubic-bezier(0.22, 1, 0.36, 1); }
 .is-button-hovered .product-highlight { opacity: 1; }
@@ -328,33 +300,51 @@ onBeforeUnmount(() => {
 @keyframes product-idle { 0%, 100% { transform: translate3d(0, 2px, 0) rotateX(-0.45deg) rotateY(-0.8deg) scale(0.997); } 50% { transform: translate3d(0, -6px, 0) rotateX(0.55deg) rotateY(0.8deg) scale(1.006); } }
 @keyframes shadow-breathe { 0%, 100% { opacity: 0.56; transform: translate3d(-42%, 1px, 0) scaleX(0.96); } 50% { opacity: 0.44; transform: translate3d(-42%, 5px, 0) scaleX(1.03); } }
 
-@media (max-width: 1100px) {
-  .login-shell { grid-template-columns: minmax(370px, 45%) minmax(0, 55%); }
-  .login-panel { padding: 38px; }
-  .product-panel__copy { left: 42px; }
-  .product-visual { inset: 23% -8% 7% -2%; }
+@media (min-width: 768px) and (max-width: 1199px) {
+  .login-shell { grid-template-columns: minmax(0, 44%) minmax(390px, 56%); }
+  .login-panel { padding: clamp(20px, 4vw, 40px); }
+  .product-media--video { object-fit: contain; }
 }
 
 @media (max-width: 767px) {
-  .login-page { overflow-x: hidden; overflow-y: auto; background: linear-gradient(180deg, #3a2115 0, #6b4430 38%, #f5eadc 38.1%, #fbf6ef 100%); }
-  .login-shell { display: flex; min-height: 100svh; flex-direction: column; }
-  .product-panel { order: 1; min-height: 330px; height: 42svh; }
-  .login-panel { z-index: 5; order: 2; align-items: flex-start; margin-top: -18px; padding: 30px 22px 32px; border-top: 1px solid rgba(255, 255, 255, 0.7); border-right: 0; border-radius: 24px 24px 0 0; background: rgba(252, 247, 239, 0.97); }
+  .login-page { width: 100%; height: auto; min-height: 100svh; overflow-x: hidden; overflow-y: auto; background: linear-gradient(180deg, #f7efe4 0, #fbf6ef 100%); }
+  .login-shell { display: flex; height: auto; min-height: 100svh; flex-direction: column; }
+  .login-panel { order: 1; grid-column: auto; grid-row: auto; z-index: 5; align-items: flex-start; padding: 30px 22px 32px; background: rgba(252, 247, 239, 0.97); }
+  .login-panel__inner { padding: 24px 20px; border-radius: 18px; }
+  .product-panel { display: none; }
   .brand { margin-bottom: 29px; }
   .login-copy { margin-bottom: 26px; }
   .login-copy h1 { font-size: 2.18rem; }
-  .product-panel__copy { top: 28px; left: 24px; }
-  .product-panel__copy h2, .product-panel__copy > p:last-child { display: none; }
-  .product-panel__eyebrow { font-size: 0.56rem; }
-  .product-visual { inset: 8% -10% -5% -10%; transform: translate3d(10%, 11%, 0); }
-  .product-idle { width: 100%; height: 100%; animation-duration: 9s; }
-  .product-caption { right: 22px; bottom: 32px; left: 22px; font-size: 0.5rem; }
-  .product-shadow { bottom: 4%; }
 }
 
 @media (max-width: 380px) {
-  .product-panel { min-height: 290px; height: 38svh; }
   .login-panel { padding-inline: 18px; }
+}
+
+@media (max-height: 850px) and (min-width: 768px) {
+  .login-panel { padding-block: 20px; }
+  .login-panel__inner { padding-block: 18px; }
+  .brand { margin-bottom: clamp(14px, 2.5vh, 22px); }
+  .login-copy { margin-bottom: 15px; }
+  .login-copy h1 { font-size: clamp(1.9rem, 3vw, 2.65rem); }
+  .login-copy p { margin-top: 12px; }
+  .login-form { gap: 12px; }
+  .secure-note { margin-top: 12px; }
+  .production-credit { margin-top: 14px; padding-top: 10px; }
+}
+
+@media (orientation: portrait) and (min-width: 768px) and (max-width: 1199px) {
+  .login-page { height: auto; min-height: 100svh; overflow-y: auto; }
+  .login-shell { display: flex; height: auto; min-height: 100svh; flex-direction: column; }
+  .login-panel { order: 1; align-items: flex-start; border-right: 0; }
+  .product-panel { order: 2; min-height: min(42svh, 420px); height: min(42svh, 420px); }
+}
+
+@media (max-height: 700px) and (max-width: 767px) {
+  .login-panel { padding-block: 18px; }
+  .brand { margin-bottom: 18px; }
+  .login-copy { margin-bottom: 16px; }
+  .secure-note { margin-top: 12px; }
 }
 
 @media (prefers-reduced-motion: reduce) {

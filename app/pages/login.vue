@@ -68,7 +68,7 @@
                 v-else
                 ref="productVideo"
                 class="product-media product-media--video"
-                src="/3D_Rolla_brownies.mp4"
+                src="/3D_Rolla_brownies_new.mp4"
                 poster="/Rolla_Brownise_nobg.png"
                 autoplay
                 muted
